@@ -3,27 +3,77 @@
  */
 package bitcamp.project3;
 
-import bitcamp.project3.vo.Grandpa;
+import bitcamp.project3.command.*;
+import bitcamp.project3.util.Prompt;
+import bitcamp.project3.vo.BookInfo;
 import bitcamp.project3.vo.Guest;
-import bitcamp.project3.vo.Kid;
-import bitcamp.project3.vo.NoJob;
-import bitcamp.project3.vo.Student;
+import bitcamp.project3.vo.RentInfo;
+import bitcamp.project3.vo.StoreInfo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 public class App {
+    String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
+    Map<String, Command> commandMap = new HashMap<>();
+    private App(){
+        List<BookInfo> bookInfos = new ArrayList<>();
+        List<RentInfo> rentInfos = new ArrayList<>();
+        List<StoreInfo> storeInfos  = new ArrayList<>();
+        List<Guest> guests = new ArrayList<>();
 
+        commandMap.put("손님받기", new GuestCommand());
+        commandMap.put("재고확인", new StockCommand());
+        commandMap.put("상점가기", new StoreCommand());
+        commandMap.put("메모하기", new NoteCommand());
+        commandMap.put("일과정산", new DayOverCommand());
+
+    }
     public static void main(String[] args) {
+        new App().execute();
+    }
 
-        Guest guest1 = new Kid();
-        System.out.println(guest1.toString(guest1.getType()));
+    public void execute() {
+        printMenu();
 
-        Guest guest2 = new Student();
-        System.out.println(guest2.toString(guest2.getType()));
+        String command = "";
+        while (true) {
+            try{
+                command = Prompt.input("메인>");
 
-        Guest guest3 = new NoJob();
-        System.out.println(guest3.toString(guest3.getType()));
+            } catch (NumberFormatException ex){}
+            if (command.equals("menu")) {
+                printMenu();
+                continue;
+            }
+            int menuNo = Integer.parseInt(command);
+            String menuTitle = getMenuTitle(menuNo);
+            processMenu(menuTitle);
+        }
+    }
 
-        Guest guest4 = new Grandpa();
-        System.out.println(guest4.toString(guest4.getType()));
+    private void processMenu(String menuTitle){
+        Command command = commandMap.get(menuTitle);
+        if (command == null) {
+            System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
+            return;
+        }
+        command.execute();
+    }
 
+    private boolean isValidateMenu(int menuNo) {
+        return menuNo >= 1 && menuNo <= menus.length;
+    }
+
+    private String getMenuTitle(int menuNo) {
+        return isValidateMenu(menuNo) ? menus[menuNo - 1] : null;
+    }
+
+    static public void printMenu(){
+        System.out.println("제목");
+        System.out.println("가게현황");
+        System.out.println("날짜 출력");
     }
 }

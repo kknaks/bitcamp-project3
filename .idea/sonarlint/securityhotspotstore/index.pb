@@ -42,3 +42,7 @@ b
 0app/src/main/java/bitcamp/project3/vo/NoJob.java,7/b/7be63c58ab75f3e85e40356c2d3764d6e341abf8
 b
 2app/src/main/java/bitcamp/project3/vo/Grandpa.java,2/c/2c9a1a6397d3f541cb369564d31dc2c2e355307d
+l
+<app/src/main/java/bitcamp/project3/command/StoreCommand.java,5/4/548d164f155e5781e30a89ab4b19008cb008f7df
+l
+<app/src/main/java/bitcamp/project3/command/GuestCommand.java,8/0/8022554f93eceb4bd91239258fd1a1dacc49b4ee
