@@ -3,9 +3,27 @@
  */
 package bitcamp.project3;
 
+import bitcamp.project3.vo.Grandpa;
+import bitcamp.project3.vo.Guest;
+import bitcamp.project3.vo.Kid;
+import bitcamp.project3.vo.NoJob;
+import bitcamp.project3.vo.Student;
+
 public class App {
 
     public static void main(String[] args) {
+
+        Guest guest1 = new Kid();
+        System.out.println(guest1.toString(guest1.getType()));
+        
+        Guest guest2 = new Student();
+        System.out.println(guest2.toString(guest2.getType()));
+
+        Guest guest3 = new NoJob();
+        System.out.println(guest3.toString(guest3.getType()));
+
+        Guest guest4 = new Grandpa();
+        System.out.println(guest4.toString(guest4.getType()));
 
     }
 }
