@@ -1,14 +1,20 @@
 package bitcamp.project3.vo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractGuest implements Guest{
 
-    String type;
-    List<String> memos = new ArrayList<>();
-    int lossForce;
-    int reputation;
+    protected String type;
+    protected List<String> memos;
+    protected int lossForce;
+    protected int reputation;
+
+    protected AbstractGuest(String type, List<String> memos, int lossForce, int reputation) {
+        this.type = type;
+        this.memos = memos;
+        this.lossForce = lossForce;
+        this.reputation = reputation;
+    }
 
     @Override
     public String getType() {
@@ -22,12 +28,12 @@ public abstract class AbstractGuest implements Guest{
 
     @Override
     public List<String> getMemos() {
-        return memos;
+        return memos.stream().toList();
     }
 
     @Override
     public void setMemo(String memo) {
-        this.memos.add(memo);
+        memos.add(memo);
     }
 
     @Override

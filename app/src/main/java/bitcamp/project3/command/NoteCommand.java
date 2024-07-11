@@ -5,4 +5,9 @@ public class NoteCommand implements Command{
     System.out.println("Note command executed");
   }
 
+  @Override
+  public String[] getMenus() {
+    return new String[0];
+  }
+
 }

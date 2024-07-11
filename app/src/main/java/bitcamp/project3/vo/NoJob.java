@@ -1,12 +1,12 @@
 package bitcamp.project3.vo;
 
+import java.util.List;
+
 public class NoJob extends AbstractGuest {
 
-    public NoJob() {
-        type = "백수";
-        reputation = 3;
-        lossForce = 3;
-        memos = null;
+    public NoJob(List<String> list) {
+        super("백수", list,1, 1);
+
     }
 
 }

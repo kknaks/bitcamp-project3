@@ -23,6 +23,11 @@ public class Prompt {
         return input;
     }
 
+    public static String input() {
+        System.out.print(">>");
+        return keyboardScanner.nextLine();
+    }
+
     public static int inputInt(String format, Object... args) {
         return Integer.parseInt(input(format, args));
     }

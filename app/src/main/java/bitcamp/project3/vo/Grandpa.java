@@ -1,12 +1,11 @@
 package bitcamp.project3.vo;
 
+import java.util.List;
+
 public class Grandpa extends AbstractGuest{
 
-    public Grandpa() {
-        type = "할아버지";
-        reputation = 4;
-        lossForce = 4;
-        memos = null;
+    public Grandpa(List<String> list) {
+        super("할아버지", list,1, 1);
     }
 
 }

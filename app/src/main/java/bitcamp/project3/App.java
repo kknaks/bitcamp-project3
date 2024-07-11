@@ -6,10 +6,14 @@ package bitcamp.project3;
 import bitcamp.project3.command.*;
 import bitcamp.project3.util.Prompt;
 import bitcamp.project3.vo.BookInfo;
+import bitcamp.project3.vo.Grandpa;
 import bitcamp.project3.vo.Guest;
+import bitcamp.project3.vo.Kid;
+import bitcamp.project3.vo.NoJob;
 import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.StoreInfo;
 
+import bitcamp.project3.vo.Student;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +22,7 @@ import java.util.List;
 public class App {
     String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
     Map<String, Command> commandMap = new HashMap<>();
+
     private App(){
         List<BookInfo> bookInfos = new ArrayList<>();
         List<RentInfo> rentInfos = new ArrayList<>();

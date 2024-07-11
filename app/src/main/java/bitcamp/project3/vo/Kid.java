@@ -4,11 +4,8 @@ import java.util.List;
 
 public class Kid extends AbstractGuest{
 
-    public Kid() {
-        type = "어린이";
-        reputation = 1;
-        lossForce = 1;
-        memos = null;
+    public Kid(List<String> list) {
+        super("어린이", list,1, 1);
     }
 
 
