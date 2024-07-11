@@ -3,9 +3,77 @@
  */
 package bitcamp.project3;
 
+import bitcamp.project3.command.*;
+import bitcamp.project3.util.Prompt;
+import bitcamp.project3.vo.BookInfo;
+import bitcamp.project3.vo.RentInfo;
+import bitcamp.project3.vo.StoreInfo;
+import bitcamp.project3.vo.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+
 public class App {
+    String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
+    Map<String, Command> commandMap = new HashMap<>();
+    private App(){
+        List<BookInfo> bookInfos = new ArrayList<>();
+        List<RentInfo> rentInfos = new ArrayList<>();
+        List<StoreInfo> storeInfos  = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
+        commandMap.put("손님받기", new UserCommand());
+        commandMap.put("재고확인", new StockCommand());
+        commandMap.put("상점가기", new StoreCommand());
+        commandMap.put("메모하기", new NoteCommand());
+        commandMap.put("일과정산", new DayOverCommand());
+
+    }
     public static void main(String[] args) {
+        new App().execute();
+    }
 
+    public void execute() {
+        printMenu();
+
+        String command = "";
+        while (true) {
+            try{
+                command = Prompt.input("메인>");
+
+            } catch (NumberFormatException ex){}
+            if (command.equals("menu")) {
+                printMenu();
+                continue;
+            }
+            int menuNo = Integer.parseInt(command);
+            String menuTitle = getMenuTitle(menuNo);
+            processMenu(menuTitle);
+        }
+    }
+
+    private void processMenu(String menuTitle){
+        Command command = commandMap.get(menuTitle);
+        if (command == null) {
+            System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
+            return;
+        }
+        command.execute();
+    }
+
+    private boolean isValidateMenu(int menuNo) {
+        return menuNo >= 1 && menuNo <= menus.length;
+    }
+
+    private String getMenuTitle(int menuNo) {
+        return isValidateMenu(menuNo) ? menus[menuNo - 1] : null;
+    }
+
+    static public void printMenu(){
+        System.out.println("제목");
+        System.out.println("가게현황");
+        System.out.println("날짜 출력");
     }
 }
