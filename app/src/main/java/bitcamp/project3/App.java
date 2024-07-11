@@ -15,7 +15,7 @@ public class App {
 
         Guest guest1 = new Kid();
         System.out.println(guest1.toString(guest1.getType()));
-        
+
         Guest guest2 = new Student();
         System.out.println(guest2.toString(guest2.getType()));
 
