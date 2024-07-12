@@ -12,7 +12,6 @@ import bitcamp.project3.vo.StoreInfo;
 import bitcamp.project3.vo.Student;
 import java.awt.print.Book;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class GuestCommand implements Command {
   Guest guest = guests[randomValue];
 
 
-  public void execute(){
+  public void execute() {
     int menuNo;
 
     /*
@@ -71,21 +70,21 @@ public class GuestCommand implements Command {
 
     printMenus();
 
-    while (true){
+    while (true) {
       try {
         menuNo = Prompt.inputInt(">");
-        if (menuNo == 0){
+        if (menuNo == 0) {
           return;
         }
-        if (getMenuTitle(menuNo) == null){
+        if (getMenuTitle(menuNo) == null) {
           System.out.println("유효한 메뉴 값이 아닙니다.");
           continue;
         }
         MenuAction action = menuMap.get(menuNo);
-        if (action != null){
+        if (action != null) {
           action.execute();
         }
-      }catch (NumberFormatException exception){
+      } catch (NumberFormatException exception) {
         System.out.println("숫자만 입력해 주세요.");
       }
     }

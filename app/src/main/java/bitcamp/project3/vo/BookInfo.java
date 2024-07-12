@@ -10,6 +10,7 @@ public class BookInfo {
     this.stock = stock;
     this.price = price;
   }
+
   public int getPrice() {
     return price;
   }
@@ -22,6 +23,10 @@ public class BookInfo {
     return bookName;
   }
 
+  public void setBookName(String bookName) {
+    this.bookName = bookName;
+  }
+
   public int getStock() {
     return stock;
   }
@@ -30,8 +35,9 @@ public class BookInfo {
     this.stock = stock;
   }
 
-  public void setBookName(String bookName) {
-    this.bookName = bookName;
+  @Override
+  public String toString() {
+    return bookName + ", " + stock + ", " + price;
   }
   //중첩클래스 사용 ?
 
