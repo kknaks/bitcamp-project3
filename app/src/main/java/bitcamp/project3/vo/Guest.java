@@ -28,7 +28,13 @@ public interface Guest {
 
     void setRentInfos(RentInfo rentInfo);
 
+    int getRentPeriod();
+
+    void setRentPeriod(int rentPeriod);
+
     void setBookInfos(BookInfo bookInfo);
 
     String toString(String guest);
+
+
 }

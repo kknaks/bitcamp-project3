@@ -11,14 +11,16 @@ public abstract class AbstractGuest implements Guest{
     protected List<BookInfo> bookInfos;
     protected int lossForce;
     protected int reputation;
+    protected int rentPeriod;
 
-    protected AbstractGuest(String type, int lossForce, int reputation) {
+    protected AbstractGuest(String type, int lossForce, int reputation, int rentPeriod) {
         this.type = type;
         this.memos = new ArrayList<>();
         this.rentInfos = new ArrayList<>();
         this.bookInfos = new ArrayList<>();
         this.lossForce = lossForce;
         this.reputation = reputation;
+        this.rentPeriod = rentPeriod;
     }
 
     @Override
@@ -69,6 +71,16 @@ public abstract class AbstractGuest implements Guest{
     @Override
     public int getReputation() {
         return reputation;
+    }
+
+    @Override
+    public int getRentPeriod() {
+        return this.rentPeriod;
+    }
+
+    @Override
+    public void setRentPeriod(int rentPeriod) {
+        this.rentPeriod = rentPeriod;
     }
 
     @Override

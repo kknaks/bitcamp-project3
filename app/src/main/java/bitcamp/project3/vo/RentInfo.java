@@ -4,7 +4,17 @@ import java.time.LocalDate;
 
 public class RentInfo {
   private String bookName;
-  private LocalDate retunDate;
+  private LocalDate rentStartDate;
+  private LocalDate rentEndDate;
+  private boolean bookReturn = false;
+
+  public boolean isBookReturn() {
+    return bookReturn;
+  }
+
+  public void setBookReturn(boolean bookReturn) {
+    this.bookReturn = bookReturn;
+  }
 
   public String getBookName() {
     return bookName;
@@ -12,5 +22,21 @@ public class RentInfo {
 
   public void setBookName(String bookName) {
     this.bookName = bookName;
+  }
+
+  public LocalDate getRentStartDate() {
+    return rentStartDate;
+  }
+
+  public void setRentStartDate(LocalDate rentStartDate) {
+    this.rentStartDate = rentStartDate;
+  }
+
+  public LocalDate getRentEndDate() {
+    return rentEndDate;
+  }
+
+  public void setRentEndDate(LocalDate rentEndDate) {
+    this.rentEndDate = rentEndDate;
   }
 }
