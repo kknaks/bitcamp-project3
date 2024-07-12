@@ -22,7 +22,7 @@ public class App {
 
   private App() {
     commandMap.put("손님받기", new GuestCommand());
-    commandMap.put("재고확인", new StockCommand(bookList));
+    commandMap.put("재고확인", new StockCommand(bookList, storeInfos));
     commandMap.put("상점가기", new StoreCommand(bookList, storeInfos));
     commandMap.put("메모하기", new NoteCommand(guests, storeInfos));
     commandMap.put("일과정산", new DayOverCommand(storeInfos));
