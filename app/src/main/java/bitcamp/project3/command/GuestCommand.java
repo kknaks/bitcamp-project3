@@ -22,6 +22,7 @@ public class GuestCommand implements Command {
   List<RentInfo> rentInfoList;
   StoreInfo storeInfo;
   Map<Integer, MenuAction> menuMap = new HashMap<>();
+  static String bookName;
   static Random random = new Random();
   static Guest[] guests = {
       new Kid(),
@@ -32,33 +33,23 @@ public class GuestCommand implements Command {
   static int guestRandomValue = random.nextInt(guests.length);
   Guest guest = guests[guestRandomValue];
 
-
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo) {
-    menuMap.put(1, () -> accept(guest));
-    menuMap.put(2, () -> reject(guest));
-    menuMap.put(3, () -> viewMemo(guest));
     this.bookInfoList = bookInfoList;
     this.rentInfoList = rentInfoList;
     this.storeInfo = storeInfo;
   }
 
-
-
-
   public void execute() {
+    menuMap.put(1, () -> accept(guest));
+    menuMap.put(2, () -> reject(guest));
+    menuMap.put(3, () -> viewMemo(guest));
+
     int menuNo;
 
     System.out.println("---------------------------------------------------------------");
-    System.out.printf("띠링\uD83C\uDFB6 [%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.printf("제목 \t \t \t \t 가격 개수 \n");
+    System.out.printf("띠링띠링 [%s] 손님이 입장하셨습니다.\n", guest.getType());
 
-    for (BookInfo bookInfo : bookInfoList){
-      System.out.print(bookInfo.getBookName() + "  ");
-      System.out.print(bookInfo.getPrice() + "   ");
-      System.out.print(bookInfo.getStock() + "\n");
-    }
-
-    String bookName = bookInfoList.get(random.nextInt(bookInfoList.size())).getBookName();
+    bookName = bookInfoList.get(random.nextInt(bookInfoList.size())).getBookName();
     System.out.printf("\n[%s] >> [%s] 책 빌릴 수 있을까요?\n",guest.getType(), bookName);
     System.out.println("---------------------------------------------------------------");
 
@@ -76,9 +67,12 @@ public class GuestCommand implements Command {
           continue;
         }
         MenuAction action = menuMap.get(menuNo);
+
         if (action != null) {
           action.execute();
+          break;
         }
+
       } catch (NumberFormatException exception) {
         System.out.println("숫자만 입력해 주세요.");
       }
@@ -86,70 +80,71 @@ public class GuestCommand implements Command {
   }
 
   public void accept(Guest guest){
-    System.out.println("승락");
+    BookInfo book = getBook();
+    if (book.getStock() == 0){
+      System.out.printf("현재 [%s] 책 재고가 없습니다. 다음에 찾아주세요.", book.getBookName());
+      storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
+      storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
+    }else{
+      LocalDate rentPeriod = LocalDate.now().plusDays(guest.getRentPeriod());
+      System.out.printf("[%s]일 까지 반납하세요!\n", rentPeriod);
+
+      RentInfo rentInfo = new RentInfo();
+      rentInfo.setGuestType(guest.getType());
+      rentInfo.setBookName(book.getBookName());
+      rentInfo.setRentStartDate(LocalDate.now());
+      rentInfo.setRentEndDate(rentPeriod);
+      rentInfoList.add(rentInfo);
+      book.setStock(book.getStock() - 1);
+
+      String memo = Prompt.input("메모 입력>");
+      MemoInfo memoInfo = new MemoInfo();
+      memoInfo.setMemo(memo);
+      memoInfo.setWriteDate(LocalDate.now());
+      guest.setMemo(memoInfo);
+      System.out.println("작성 완료.");
+      System.out.printf("[%s] 재고: [%d]권\n",book.getBookName(), book.getStock());
+
+      storeInfo.setAccount(storeInfo.getAccount() + book.getPrice());
+
+      storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
+
+      storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
+    }
   }
 
   public void reject(Guest guest){
-    System.out.println("거절");
+    System.out.println("죄송합니다. 다음에 찾아주세요.\n");
+
+    storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
+
+    storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
   }
 
   public void viewMemo(Guest guest){
-    System.out.println("메모");
+    if (guest.getMemos().isEmpty()){
+      System.out.println("등록된 메모가 없습니다.");
+    }else{
+      System.out.printf("%s 손님의 메모 정보\n", guest.getType());
+      for (MemoInfo memo : guest.getMemos()){
+        System.out.println("작성날짜    내용");
+        System.out.printf("%s \t \t%s\n",memo.getWriteDate(),memo.getMemo());
+      }
+      printMenus();
+    }
+
   }
 
 
-
-
-/*
-* >> [초등학생] : [블리츠] 있나요
-1. 빌려준다 [명성 +10 , 분실 O, 피로도 +10]
-2. 안빌려준다 [명성 -20 , 분실 ㅌ, 피로도 +5]
-* */
-  public void callGuest(Guest guest){
-    String bookTitle = "나루토";
-
-    System.out.println("---------------------------------------------------------------");
-    System.out.printf("[%s] >> [%s] 있나요?\n", guest.getType(), bookTitle);
-    System.out.printf("손님이 [%s] 책을 찾는다...\n", bookTitle);
-    System.out.println("---------------------------------------------------------------");
-
-    System.out.println("1. 빌려준다 [명성+10, 분실 O, 피로도+10]");
-    System.out.println("2. 안 빌려준다 [명성-10, 분실 X, 피로도+5]");
-
-    while (true){
-      try {
-        int menuNo = Prompt.inputInt(">");
-        switch (menuNo){
-          case 1:
-            LocalDate rentPeriod = LocalDate.now().plusDays(guest.getRentPeriod());
-
-            System.out.printf("[%s]일 까지 반납하세요!\n", rentPeriod);
-
-            RentInfo rentInfo = new RentInfo();
-            rentInfo.setBookName(bookTitle);
-            rentInfo.setRentStartDate(LocalDate.now());
-            rentInfo.setRentEndDate(rentPeriod);
-            break;
-          case 2:
-            System.out.println("안 빌려줄거야 명성하락, 피로도업");
-            break;
-          default:
-            System.out.println("유효한 값이 아닙니다.");
-            continue;
-        }
-        return;
-      }catch (NumberFormatException exception){
-        System.out.println("숫자만 입력해 주세요.");
+  private BookInfo getBook(){
+    for (BookInfo bookInfo : bookInfoList){
+      if (bookInfo.getBookName().equals(bookName)){
+        return bookInfo;
       }
     }
+    return null;
   }
 
-  public void memoInfo(Guest guest){
-    System.out.printf("%s 손님의 메모 정보\n", guest.getType());
-    for (MemoInfo memo : guest.getMemos()){
-      System.out.println(memo.getMemo() + memo.getWriteDate());
-    }
-  }
 
   @Override
   public String[] getMenus() {

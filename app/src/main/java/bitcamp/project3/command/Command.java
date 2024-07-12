@@ -1,9 +1,5 @@
 package bitcamp.project3.command;
 
-import bitcamp.project3.vo.RentInfo;
-import java.util.ArrayList;
-import java.util.List;
-
 public interface Command {
 
   void execute();
