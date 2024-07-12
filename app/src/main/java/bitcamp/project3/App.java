@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class App {
-  String[] menus = new String[] {"손님받기", "운영관리", "메모하기", "일과정산"};
+  String[] menus = new String[] {"손님받기", "운영관리", "메모하기", "일과정산", "변수확인"};
   //  Stack menuPath = new Stack();
   Map<String, Command> commandMap = new HashMap<>();
   List<BookInfo> bookList = new ArrayList<>();
@@ -23,7 +23,7 @@ public class App {
 
   private App() {
     commandMap.put("손님받기", new GuestCommand(bookList, rentInfos, storeInfos));
-    commandMap.put("운영관리", new StockCommand(bookList, rentInfos, storeInfos));
+    commandMap.put("운영관리", new OperationCommand(bookList, rentInfos, storeInfos));
     commandMap.put("메모하기", new NoteCommand(guests, storeInfos));
     commandMap.put("일과정산", new DayOverCommand(storeInfos));
     setData(bookList, guests);
@@ -50,6 +50,7 @@ public class App {
     //    menuPath.push("메인");
     String command = "";
     while (true) {
+      //System.out.println(guests.get(0).getMemos()); // 확인용
       printInfo();
       printMenu();
       try {

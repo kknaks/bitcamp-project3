@@ -90,7 +90,7 @@ public class GuestCommand implements Command {
       String memo = Prompt.input("메모 입력>");
       MemoInfo memoInfo = new MemoInfo();
       memoInfo.setMemo(memo);
-      memoInfo.setWriteDate(LocalDate.now());
+      memoInfo.setWriteDate(storeInfo.getDate());
       guest.setMemo(memoInfo);
       System.out.println("작성 완료.");
       System.out.printf("[%s] 재고: [%d]권\n", book.getBookName(), book.getStock());

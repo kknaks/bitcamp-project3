@@ -5,11 +5,12 @@ import bitcamp.project3.vo.BookInfo;
 import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.StoreInfo;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StockCommand implements Command {
+public class OperationCommand implements Command {
 
   String[] menus = {"재고조회", "서점가기", "대출현황"};
   Map<Integer, MenuAction> menuMap = new HashMap<>();
@@ -17,7 +18,7 @@ public class StockCommand implements Command {
   private List<RentInfo> rentList;
   private StoreInfo storeInfo;
 
-  public StockCommand(List<BookInfo> bookList, List<RentInfo> rentList, StoreInfo storeInfo) {
+  public OperationCommand(List<BookInfo> bookList, List<RentInfo> rentList, StoreInfo storeInfo) {
     this.bookList = bookList;
     this.rentList = rentList;
     this.storeInfo = storeInfo;
@@ -28,7 +29,6 @@ public class StockCommand implements Command {
   //    //    String s2 = "가가가가";
   //    //    String s3 = "가가가가가";
   //
-  //    // 각 문자열의 실제 출력 길이를 계산
   //    int width = 15; // 원하는 폭
   //    String s4 = "";
   //    for (int i = 0; i < 10; i++){
@@ -38,23 +38,39 @@ public class StockCommand implements Command {
   //      System.out.printf("----------\n");
   //    }
   //  }
-  //  private static int getAdjustedWidth(String s, int width) {
-  //    int length = s.length();
-  //    int nonAsciiCount = 0;
-  //
-  //    for (char c : s.toCharArray()) {
-  //      if (c > 127) {
-  //        nonAsciiCount++;
-  //      }
-  //    }
-  //
-  //    return width - ((2 * nonAsciiCount - 1) / 2);
-  //  }
+  private static int getAdjustedWidth(String s, int width) {
+    int length = s.length();
+    int nonAsciiCount = 0;
+
+    for (char c : s.toCharArray()) {
+      if (c > 127) {
+        nonAsciiCount++;
+      }
+    }
+    return width - ((2 * nonAsciiCount - 1) / 2);
+  }
+
+  private static String getCenteredString(String s, int totalWidth) {
+    int length = s.length();
+    int spaces = (totalWidth - length) / 2;
+    int leftSpaces = spaces;
+    int rightSpaces = totalWidth - length - leftSpaces;
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < leftSpaces; i++) {
+      sb.append(" ");
+    }
+    sb.append(s);
+    for (int i = 0; i < rightSpaces; i++) {
+      sb.append(" ");
+    }
+    return sb.toString();
+  }
 
   public void execute() {
     menuMap.put(1, this::checkStock);
-    menuMap.put(2, this::checkRent);
-    menuMap.put(3, this::bookStore);
+    menuMap.put(2, this::bookStore);
+    menuMap.put(3, this::checkRent);
 
     while (true) {
       printMenus();
@@ -75,26 +91,37 @@ public class StockCommand implements Command {
   }
 
   public void checkStock() {
-    int strWidth = 10;
+    int strWidth = 12;
     System.out.println("재고현황");
     System.out.println("-----------------------------");
     System.out.printf("%-10s|%10s\n", "책제목", "보유권수");
     System.out.println("-----------------------------");
     for (BookInfo bookInfo : bookList) {
-      System.out.printf("%-10s|", bookInfo.getBookName());
+      System.out.printf("%-" + getAdjustedWidth(bookInfo.getBookName(), strWidth) + "s|",
+          bookInfo.getBookName());
       System.out.printf("%10s권\n", bookInfo.getStock());
     }
     System.out.println("-----------------------------");
   }
 
   public void bookStore() {
+    int strWidth = 12;
     System.out.println("서점");
-    for (int i = 0; i < bookList.size(); i++) {
-      BookInfo bookInfo = bookList.get(i);
-      System.out.println(bookInfo.toString());
+    System.out.println("-----------------------------");
+    System.out.printf("%-10s|%10s\n", "책제목", "판매가격");
+    System.out.println("-----------------------------");
+    for (BookInfo bookInfo : bookList) {
+      System.out.printf("%-" + getAdjustedWidth(bookInfo.getBookName(), strWidth) + "s|",
+          bookInfo.getBookName());
+      System.out.printf("%10s원\n", bookInfo.getPrice());
     }
+    System.out.println("-----------------------------");
+
     try {
-      int menuNo = Prompt.inputInt("구매할 책>");
+      int menuNo = Prompt.inputInt("구매할 책(뒤로가기: 0)>");
+      if (menuNo == 0) {
+        return;
+      }
       if (menuNo > bookList.size() || menuNo < 0) {
         System.out.println("없는책");
       } else {
@@ -115,8 +142,23 @@ public class StockCommand implements Command {
 
   public void checkRent() {
     System.out.println("대출현황");
+    System.out.println("-----------------------------------------------------");
+    System.out.printf("  고객구분  |");
+    System.out.printf("   책제목   |");
+    System.out.printf("   대여일   |");
+    System.out.printf("   반납일   \n");
+    System.out.println("-----------------------------------------------------");
     for (RentInfo rentInfo : rentList) {
-      System.out.println(rentInfo.toString());
+      System.out.printf("%-" + getAdjustedWidth(rentInfo.getGuestType(), 11) + "s|",
+          rentInfo.getGuestType());
+      System.out.printf("%-" + getAdjustedWidth(rentInfo.getBookName(), 11) + "s|",
+          rentInfo.getBookName());
+      String startDateStr = rentInfo.getRentStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
+      System.out.printf(" %-" + getAdjustedWidth(startDateStr, 11) + "s|", startDateStr);
+      String endDateStr = rentInfo.getRentEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
+      System.out.printf(" %-" + getAdjustedWidth(endDateStr, 11) + "s|", endDateStr);
+
+      System.out.println();
     }
   }
 
