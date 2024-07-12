@@ -9,18 +9,17 @@ import java.util.List;
 // Grandpa (할아버지)
 public interface Guest {
 
+  String getType();
 
-    String getType();
+  void setType(String type);
 
-    void setType(String type);
+  List<MemoInfo> getMemos();
 
-    List<MemoInfo> getMemos();
+  void setMemo(MemoInfo memo);
 
-    void setMemo(MemoInfo memo);
+  int getLossForce();
 
-    int getLossForce();
-
-    int getReputation();
+  int getReputation();
 
     List<BookInfo> getBookInfos();
 
