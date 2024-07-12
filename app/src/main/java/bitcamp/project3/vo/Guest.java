@@ -20,15 +20,10 @@ public interface Guest {
 
   int getReputation();
 
-  List<RentInfo> getRentInfos();
+    int getRentPeriod();
 
-  void setRentInfos(RentInfo rentInfo);
+    void setRentPeriod(int rentPeriod);
 
-  List<BookInfo> getBookInfos();
 
-  int getRentPeriod();
 
-  void setRentPeriod(int rentPeriod);
-
-  String toString(String guest);
 }

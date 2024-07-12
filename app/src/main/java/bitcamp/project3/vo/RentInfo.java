@@ -3,6 +3,7 @@ package bitcamp.project3.vo;
 import java.time.LocalDate;
 
 public class RentInfo {
+  private String guestType;
   private String bookName;
   private LocalDate rentStartDate;
   private LocalDate rentEndDate;
@@ -10,6 +11,14 @@ public class RentInfo {
 
   public boolean isBookReturn() {
     return bookReturn;
+  }
+
+  public String getGuestType() {
+    return guestType;
+  }
+
+  public void setGuestType(String guestType) {
+    this.guestType = guestType;
   }
 
   public void setBookReturn(boolean bookReturn) {

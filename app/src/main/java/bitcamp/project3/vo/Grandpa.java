@@ -1,6 +1,5 @@
 package bitcamp.project3.vo;
 
-import java.util.List;
 
 public class Grandpa extends AbstractGuest{
 

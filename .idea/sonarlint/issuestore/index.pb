@@ -62,3 +62,5 @@ l
 <app/src/main/java/bitcamp/project3/command/StockCommand.java,5/2/5297599c37d7f17e354456d731c95febe750b98a
 c
 3app/src/main/java/bitcamp/project3/vo/MemoInfo.java,1/a/1aaa5907dfa816f4452330cc78a16a5f7a98d867
+e
+5app/src/main/java/bitcamp/project3/util/BookList.java,a/0/a07fb1feec60d34248656fbd89d2407f59c784ab

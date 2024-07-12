@@ -7,8 +7,6 @@ public abstract class AbstractGuest implements Guest{
 
     protected String type;
     protected List<MemoInfo> memos;
-    protected List<RentInfo> rentInfos;
-    protected List<BookInfo> bookInfos;
     protected int lossForce;
     protected int reputation;
     protected int rentPeriod;
@@ -16,8 +14,6 @@ public abstract class AbstractGuest implements Guest{
     protected AbstractGuest(String type, int lossForce, int reputation, int rentPeriod) {
         this.type = type;
         this.memos = new ArrayList<>();
-        this.rentInfos = new ArrayList<>();
-        this.bookInfos = new ArrayList<>();
         this.lossForce = lossForce;
         this.reputation = reputation;
         this.rentPeriod = rentPeriod;
@@ -31,26 +27,6 @@ public abstract class AbstractGuest implements Guest{
     @Override
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public void setRentInfos(RentInfo rentInfo) {
-        this.rentInfos.add(rentInfo);
-    }
-
-    @Override
-    public void setBookInfos(BookInfo bookInfo) {
-        this.bookInfos.add(bookInfo);
-    }
-
-    @Override
-    public List<RentInfo> getRentInfos() {
-        return rentInfos.stream().toList();
-    }
-
-    @Override
-    public List<BookInfo> getBookInfos() {
-        return bookInfos.stream().toList();
     }
 
     @Override
@@ -83,12 +59,5 @@ public abstract class AbstractGuest implements Guest{
         this.rentPeriod = rentPeriod;
     }
 
-    @Override
-    public String toString(String guest) {
-        return type +
-            ": 메모=" + memos +
-            ", 대출정보=" + rentInfos +
-            ", 도서정보=" + bookInfos;
-    }
 
 }

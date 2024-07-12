@@ -1,8 +1,13 @@
 package bitcamp.project3.command;
 
-public interface Command {
-  void execute();
+import bitcamp.project3.vo.RentInfo;
+import java.util.ArrayList;
+import java.util.List;
 
+public interface Command {
+
+  void execute();
+  String[] getMenus();
 
   default void printMenus() {
     String[] menus = getMenus();
@@ -22,5 +27,7 @@ public interface Command {
     return menuNo >= 1 && menuNo <= menus.length;
   }
 
-  String[] getMenus();
+
+
+
 }
