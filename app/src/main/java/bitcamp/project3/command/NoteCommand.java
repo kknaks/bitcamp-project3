@@ -3,15 +3,17 @@ package bitcamp.project3.command;
 import bitcamp.project3.util.Prompt;
 import bitcamp.project3.vo.Guest;
 import bitcamp.project3.vo.MemoInfo;
+import bitcamp.project3.vo.StoreInfo;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class NoteCommand implements Command {
   List<Guest> guestList;
+  StoreInfo storeInfos;
 
-  public NoteCommand(List<Guest> guestList) {
+  public NoteCommand(List<Guest> guestList, StoreInfo storeInfos) {
     this.guestList = guestList;
+    this.storeInfos = storeInfos;
   }
 
   public void execute() {
@@ -32,7 +34,7 @@ public class NoteCommand implements Command {
           String comment = Prompt.input("메모할 사항 :");
           MemoInfo memo = new MemoInfo();
           memo.setMemo(comment);
-          memo.setWriteDate(LocalDate.now());
+          memo.setWriteDate(storeInfos.getDate());
           Guest guest = guestList.get(menuNo - 1);
           guest.setMemo(memo);
           System.out.println("등록완료");

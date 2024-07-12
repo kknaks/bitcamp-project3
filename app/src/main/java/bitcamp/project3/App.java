@@ -15,47 +15,42 @@ import java.util.Map;
 public class App {
   String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
   Map<String, Command> commandMap = new HashMap<>();
+  List<BookInfo> bookList = new ArrayList<>();
+  List<RentInfo> rentInfos = new ArrayList<>();
+  StoreInfo storeInfos = new StoreInfo();
+  List<Guest> guests = new ArrayList<>();
 
   private App() {
-    List<BookInfo> bookList = new ArrayList<>();
-    bookList.add(new BookInfo("귀멸의칼날1", 2, 10));
-    bookList.add(new BookInfo("귀멸의칼날2", 3, 10));
-    bookList.add(new BookInfo("귀멸의칼날3", 1, 10));
-    bookList.add(new BookInfo("귀멸의칼날4", 5, 10));
-    bookList.add(new BookInfo("귀멸의칼날5", 6, 10));
-
-    List<RentInfo> rentInfos = new ArrayList<>();
-    StoreInfo storeInfos = new StoreInfo(50, 50, 50);
-    List<Guest> guests = new ArrayList<>();
-    guests.add(new Kid());
-    guests.add(new NoJob());
-    guests.add(new Grandpa());
-    guests.add(new Student());
-
-
     commandMap.put("손님받기", new GuestCommand());
     commandMap.put("재고확인", new StockCommand(bookList));
     commandMap.put("상점가기", new StoreCommand(bookList, storeInfos));
-    commandMap.put("메모하기", new NoteCommand(guests));
-    commandMap.put("일과정산", new DayOverCommand());
-
+    commandMap.put("메모하기", new NoteCommand(guests, storeInfos));
+    commandMap.put("일과정산", new DayOverCommand(storeInfos));
+    setData(bookList, guests);
   }
 
   public static void main(String[] args) {
     new App().execute();
   }
 
-  static public void printMenu() {
-    System.out.println("제목");
-    System.out.println("가게현황");
-    System.out.println("날짜 출력");
+  private void setData(List<BookInfo> bookList, List<Guest> guests) {
+    bookList.add(new BookInfo("귀멸의칼날1", 2, 10));
+    bookList.add(new BookInfo("귀멸의칼날2", 3, 10));
+    bookList.add(new BookInfo("귀멸의칼날3", 1, 10));
+    bookList.add(new BookInfo("귀멸의칼날4", 5, 10));
+    bookList.add(new BookInfo("귀멸의칼날5", 6, 10));
+    guests.add(new Kid());
+    guests.add(new NoJob());
+    guests.add(new Grandpa());
+    guests.add(new Student());
+
   }
 
   public void execute() {
-    printMenu();
-
     String command = "";
     while (true) {
+      printInfo();
+      printMenu();
       try {
         command = Prompt.input("메인>");
 
@@ -69,6 +64,25 @@ public class App {
       String menuTitle = getMenuTitle(menuNo);
       processMenu(menuTitle);
     }
+  }
+
+  public void printInfo() {
+    System.out.println("[만화책방으로 건물주되기]");
+    System.out.println("-------------------------");
+    System.out.println("만화책방 현황");
+    System.out.printf("날  짜 : %s\n", storeInfos.getDate());
+    System.out.printf("자  금 : %s 원\n", storeInfos.getAccount());
+    System.out.printf("명  성 : %s 점\n", storeInfos.getReputation());
+    System.out.printf("피로도 : %s 점\n", storeInfos.getTiredness());
+  }
+
+  public void printMenu() {
+    System.out.println("-------------------------");
+    System.out.println("메뉴");
+    for (int i = 0; i < menus.length; i++) {
+      System.out.printf("%d. %s\n", (i + 1), menus[i]);
+    }
+    System.out.println("-------------------------");
   }
 
   private void processMenu(String menuTitle) {
