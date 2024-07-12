@@ -23,7 +23,7 @@ public class NoteCommand implements Command {
   public void execute() {
     for (int i = 0; i < guestList.size(); i++) {
       Guest guest = guestList.get(i);
-      menuMap.put(i, () -> note(guest));
+      menuMap.put(i + 1, () -> note(guest));
     }
     while (true) {
       printMenus();

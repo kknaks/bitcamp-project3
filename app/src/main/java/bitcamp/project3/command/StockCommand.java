@@ -23,19 +23,33 @@ public class StockCommand implements Command {
     this.storeInfo = storeInfo;
   }
 
-  private static int getAdjustedWidth(String s, int width) {
-    int length = s.length();
-    int nonAsciiCount = 0;
-
-    for (char c : s.toCharArray()) {
-      if (c > 127) {
-        nonAsciiCount++;
-      }
-    }
-
-    // 한글 문자는 일반적으로 두 글자 폭을 차지하므로, 실제 길이를 조정
-    return width - ((2 * nonAsciiCount - 1) / 2);
-  }
+  //  public static void main(String[] args) {
+  //    //    String s1 = "가가가";
+  //    //    String s2 = "가가가가";
+  //    //    String s3 = "가가가가가";
+  //
+  //    // 각 문자열의 실제 출력 길이를 계산
+  //    int width = 15; // 원하는 폭
+  //    String s4 = "";
+  //    for (int i = 0; i < 10; i++){
+  //      s4 += "가";
+  //      System.out.printf("%-" + (getAdjustedWidth(s4, width))+ "s|\n", s4);
+  //      System.out.printf("%d \n",getAdjustedWidth(s4, width));
+  //      System.out.printf("----------\n");
+  //    }
+  //  }
+  //  private static int getAdjustedWidth(String s, int width) {
+  //    int length = s.length();
+  //    int nonAsciiCount = 0;
+  //
+  //    for (char c : s.toCharArray()) {
+  //      if (c > 127) {
+  //        nonAsciiCount++;
+  //      }
+  //    }
+  //
+  //    return width - ((2 * nonAsciiCount - 1) / 2);
+  //  }
 
   public void execute() {
     menuMap.put(1, this::checkStock);
