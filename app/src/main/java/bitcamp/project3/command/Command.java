@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface Command {
 
-  List<RentInfo> rentInfos = new ArrayList<>();
-
   void execute();
   String[] getMenus();
 
@@ -29,13 +27,6 @@ public interface Command {
     return menuNo >= 1 && menuNo <= menus.length;
   }
 
-  default List<RentInfo> getRentInfos(){
-    return rentInfos;
-  }
-
-  default void addRent(RentInfo rentInfo){
-    rentInfos.add(rentInfo);
-  }
 
 
 

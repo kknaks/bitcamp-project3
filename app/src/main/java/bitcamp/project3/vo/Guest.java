@@ -1,6 +1,5 @@
 package bitcamp.project3.vo;
 
-import java.awt.print.Book;
 import java.util.List;
 
 // Kid (어린아이)
@@ -21,15 +20,10 @@ public interface Guest {
 
   int getReputation();
 
-    List<BookInfo> getBookInfos();
-
     int getRentPeriod();
 
     void setRentPeriod(int rentPeriod);
 
-    void setBookInfos(BookInfo bookInfo);
-
-    String toString(String guest);
 
 
 }

@@ -8,22 +8,23 @@ import bitcamp.project3.vo.Kid;
 import bitcamp.project3.vo.MemoInfo;
 import bitcamp.project3.vo.NoJob;
 import bitcamp.project3.vo.RentInfo;
+import bitcamp.project3.vo.StoreInfo;
 import bitcamp.project3.vo.Student;
+import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class GuestCommand implements Command {
+  List<BookInfo> bookInfoList;
+  List<RentInfo> rentInfoList;
+  StoreInfo storeInfo;
 
-  // 책은 맵으로 받기 -> 키 : 책이름 , 값 : 수량
-
-  String[] menus = {"빌려준다", "거절한다"};
-
+  Map<Integer, MenuAction> menuMap = new HashMap<>();
   private final Random random = new Random();
-  int randomValue = random.nextInt(4); // 0 ~ 3
-
   Guest[] guests = {
       new Kid(),
       new Student(),
@@ -31,20 +32,24 @@ public class GuestCommand implements Command {
       new Grandpa()
   };
 
-  Guest guest = guests[randomValue];
-  Map<Integer, MenuAction> menuMap = new HashMap<>();
-
-  public GuestCommand() {
+  public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo) {
     menuMap.put(1, () -> accept(guest));
     menuMap.put(2, () -> reject(guest));
+    this.bookInfoList = bookInfoList;
+    this.rentInfoList = rentInfoList;
+    this.storeInfo = storeInfo;
   }
+
+  String[] menus = {"빌려준다", "거절한다"};
+
+  int randomValue = random.nextInt(4); // 0 ~ 3
+  Guest guest = guests[randomValue];
+
 
   public void execute(){
     int menuNo;
 
     /*
-손님이 입장하셨습니다
-무슨 책 빌릴 수 있나요
 *
 * 1. 빌려준다
 * 2. 안빌려준다
@@ -52,8 +57,13 @@ public class GuestCommand implements Command {
 * */
     System.out.println("---------------------------------------------------------------");
     System.out.printf("띠링\uD83C\uDFB6 [%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.println("책 목록 보여주기");
-    System.out.printf("[%s] >> [나루토] 책 빌릴 수 있을까요?\n", guest.getType());
+    System.out.printf("제목 \t \t \t \t 가격 개수 \n");
+    for (BookInfo bookInfo : bookInfoList){
+      System.out.print(bookInfo.getBookName() + "  ");
+      System.out.print(bookInfo.getPrice() + "   ");
+      System.out.print(bookInfo.getStock() + "\n");
+    }
+    System.out.printf("[%s] >> [%s] 책 빌릴 수 있을까요?\n",guest.getType(), bookInfoList.get(randomValue).getBookName());
     System.out.println("---------------------------------------------------------------");
 
     printMenus();
@@ -118,7 +128,6 @@ public class GuestCommand implements Command {
             rentInfo.setBookName(bookTitle);
             rentInfo.setRentStartDate(LocalDate.now());
             rentInfo.setRentEndDate(rentPeriod);
-            rentInfos.add(rentInfo);
             break;
           case 2:
             System.out.println("안 빌려줄거야 명성하락, 피로도업");
