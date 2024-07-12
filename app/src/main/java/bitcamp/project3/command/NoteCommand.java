@@ -5,9 +5,13 @@ import bitcamp.project3.vo.Guest;
 import bitcamp.project3.vo.MemoInfo;
 import bitcamp.project3.vo.StoreInfo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class NoteCommand implements Command {
+  Map<Integer, MenuAction> menuMap = new HashMap<>();
   List<Guest> guestList;
   StoreInfo storeInfos;
 
@@ -17,37 +21,40 @@ public class NoteCommand implements Command {
   }
 
   public void execute() {
+    for (int i = 0; i < guestList.size(); i++) {
+      Guest guest = guestList.get(i);
+      menuMap.put(i, () -> note(guest));
+    }
     while (true) {
-      for (Guest guest : guestList) {
-        System.out.println(guest.getType());
-      }
-      System.out.println(9);
-      String command = Prompt.input("메모할 손놈?");
-      if (command.equals("9")) {
+      printMenus();
+
+      int menuNo = Prompt.inputInt("메모할 손놈");
+      if (menuNo == 0) {
         return;
       }
-      try {
-        int menuNo = Integer.parseInt(command);
-        if (menuNo > guestList.size()) {
-          System.out.println("없는손님");
-        } else {
-          String comment = Prompt.input("메모할 사항 :");
-          MemoInfo memo = new MemoInfo();
-          memo.setMemo(comment);
-          memo.setWriteDate(storeInfos.getDate());
-          Guest guest = guestList.get(menuNo - 1);
-          guest.setMemo(memo);
-          System.out.println("등록완료");
-        }
-      } catch (NumberFormatException e) {
-        System.out.println("숫자로 메뉴 번호를 입력하세요.");
+      if (getMenuTitle(menuNo) == null) {
+        System.out.println("없는 손님.");
+        continue;
       }
+      menuMap.get(menuNo).execute();
     }
+  }
+
+  public void note(Guest guest) {
+    String comment = Prompt.input("메모할 사항 :");
+    MemoInfo memo = new MemoInfo();
+    memo.setMemo(comment);
+    memo.setWriteDate(storeInfos.getDate());
+    guest.setMemo(memo);
+    System.out.println("등록완료");
   }
 
   @Override
   public String[] getMenus() {
-    return new String[0];
+    String[] menus = new String[guestList.size()];
+    for (int i = 0; i < guestList.size(); i++) {
+      menus[i] = guestList.get(i).getType();
+    }
+    return menus;
   }
-
 }

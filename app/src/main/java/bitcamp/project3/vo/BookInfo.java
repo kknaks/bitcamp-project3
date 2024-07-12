@@ -39,6 +39,9 @@ public class BookInfo {
   public String toString() {
     return bookName + ", " + stock + ", " + price;
   }
-  //중첩클래스 사용 ?
+
+  public String toStock() {
+    return String.valueOf(stock);
+  }
 
 }

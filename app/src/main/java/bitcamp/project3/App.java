@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class App {
-  String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
+  String[] menus = new String[] {"손님받기", "운영관리", "메모하기", "일과정산"};
+  //  Stack menuPath = new Stack();
   Map<String, Command> commandMap = new HashMap<>();
   List<BookInfo> bookList = new ArrayList<>();
   List<RentInfo> rentInfos = new ArrayList<>();
@@ -22,8 +23,7 @@ public class App {
 
   private App() {
     commandMap.put("손님받기", new GuestCommand(bookList, rentInfos, storeInfos));
-    commandMap.put("재고확인", new StockCommand(bookList, storeInfos));
-    commandMap.put("상점가기", new StoreCommand(bookList, storeInfos));
+    commandMap.put("운영관리", new StockCommand(bookList, rentInfos, storeInfos));
     commandMap.put("메모하기", new NoteCommand(guests, storeInfos));
     commandMap.put("일과정산", new DayOverCommand(storeInfos));
     setData(bookList, guests);
@@ -35,8 +35,8 @@ public class App {
 
   private void setData(List<BookInfo> bookList, List<Guest> guests) {
     bookList.add(new BookInfo("귀멸의칼날1", 2, 10));
-    bookList.add(new BookInfo("귀멸의칼날2", 3, 10));
-    bookList.add(new BookInfo("귀멸의칼날3", 1, 10));
+    bookList.add(new BookInfo("원피스", 3, 10));
+    bookList.add(new BookInfo("코난", 1, 10));
     bookList.add(new BookInfo("귀멸의칼날4", 5, 10));
     bookList.add(new BookInfo("귀멸의칼날5", 6, 10));
     guests.add(new Kid());
@@ -47,6 +47,7 @@ public class App {
   }
 
   public void execute() {
+    //    menuPath.push("메인");
     String command = "";
     while (true) {
       printInfo();
@@ -67,6 +68,7 @@ public class App {
   }
 
   public void printInfo() {
+    System.out.println("-------------------------");
     System.out.println("[만화책방으로 건물주되기]");
     System.out.println("-------------------------");
     System.out.println("만화책방 현황");
