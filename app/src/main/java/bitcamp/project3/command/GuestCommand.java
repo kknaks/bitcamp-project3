@@ -9,6 +9,7 @@ import bitcamp.project3.vo.MemoInfo;
 import bitcamp.project3.vo.NoJob;
 import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.Student;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,9 @@ import java.util.Random;
 
 public class GuestCommand implements Command {
 
-  String[] menus = {"손님유형", "도서정보","대여정보", "메모정보", "호출하기"};
+  // 책은 맵으로 받기 -> 키 : 책이름 , 값 : 수량
+
+  String[] menus = {"손님유형", "도서정보", "대여정보", "메모정보", "호출하기"};
 
   private final Random random = new Random();
   int randomValue = random.nextInt(4); // 0 ~ 3
@@ -87,9 +90,50 @@ public class GuestCommand implements Command {
     }
   }
 
+
+/*
+* >> [초등학생] : [블리츠] 있나요
+1. 빌려준다 [명성 +10 , 분실 O, 피로도 +10]
+2. 안빌려준다 [명성 -20 , 분실 ㅌ, 피로도 +5]
+* */
   public void callGuest(Guest guest){
-    System.out.println("호출");
-    System.out.printf("%s 손님 일로와보슈!!\n", guest.getType());
+    String bookTitle = "나루토";
+
+    System.out.println("---------------------------------------------------------------");
+    System.out.printf("[%s] >> [%s] 있나요?\n", guest.getType(), bookTitle);
+    System.out.printf("손님이 [%s] 책을 찾는다...\n", "원피스");
+    System.out.println("---------------------------------------------------------------");
+
+    System.out.println("1. 빌려준다 [명성+10, 분실 O, 피로도+10]");
+    System.out.println("2. 안 빌려준다 [명성-10, 분실 X, 피로도+5]");
+
+    while (true){
+      try {
+        int menuNo = Prompt.inputInt(">");
+        switch (menuNo){
+          case 1:
+            LocalDate rentPeriod = LocalDate.now().plusDays(guest.getRentPeriod());
+
+            System.out.printf("[%s]일 까지 반납하세요!\n", rentPeriod);
+
+            RentInfo rentInfo = new RentInfo();
+            rentInfo.setBookName(bookTitle);
+            rentInfo.setRentStartDate(LocalDate.now());
+            rentInfo.setRentEndDate(rentPeriod);
+            guest.setRentInfos(rentInfo);
+            break;
+          case 2:
+            System.out.println("안 빌려줄거야 명성하락, 피로도업");
+            break;
+          default:
+            System.out.println("유효한 값이 아닙니다.");
+            continue;
+        }
+        return;
+      }catch (NumberFormatException exception){
+        System.out.println("숫자만 입력해 주세요.");
+      }
+    }
   }
 
   public void memoInfo(Guest guest){
@@ -98,7 +142,6 @@ public class GuestCommand implements Command {
       System.out.println(memo.getMemo() + memo.getWriteDate());
     }
   }
-
 
   @Override
   public String[] getMenus() {

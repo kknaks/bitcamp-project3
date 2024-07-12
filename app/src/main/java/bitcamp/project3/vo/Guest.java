@@ -28,5 +28,17 @@ public interface Guest {
 
   void setBookInfos(BookInfo bookInfo);
 
+<<<<<<< HEAD
   String toString(String guest);
+=======
+    int getRentPeriod();
+
+    void setRentPeriod(int rentPeriod);
+
+    void setBookInfos(BookInfo bookInfo);
+
+    String toString(String guest);
+
+
+>>>>>>> refs/remotes/origin/main
 }

@@ -32,6 +32,8 @@ public class Prompt {
         return Integer.parseInt(input(format, args));
     }
 
+
+
     public static void close() {
         keyboardScanner.close();
     }
