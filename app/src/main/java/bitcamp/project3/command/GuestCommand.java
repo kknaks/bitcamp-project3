@@ -10,7 +10,6 @@ import bitcamp.project3.vo.NoJob;
 import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.StoreInfo;
 import bitcamp.project3.vo.Student;
-import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -18,42 +17,37 @@ import java.util.Map;
 import java.util.Random;
 
 public class GuestCommand implements Command {
+  String[] menus = {"빌려준다", "거절한다", "메모확인"};
   List<BookInfo> bookInfoList;
   List<RentInfo> rentInfoList;
   StoreInfo storeInfo;
-
   Map<Integer, MenuAction> menuMap = new HashMap<>();
-  private final Random random = new Random();
-  Guest[] guests = {
+  static Random random = new Random();
+  static Guest[] guests = {
       new Kid(),
       new Student(),
       new NoJob(),
       new Grandpa()
   };
+  static int guestRandomValue = random.nextInt(guests.length);
+  Guest guest = guests[guestRandomValue];
+
 
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo) {
     menuMap.put(1, () -> accept(guest));
     menuMap.put(2, () -> reject(guest));
+    menuMap.put(3, () -> viewMemo(guest));
     this.bookInfoList = bookInfoList;
     this.rentInfoList = rentInfoList;
     this.storeInfo = storeInfo;
   }
 
-  String[] menus = {"빌려준다", "거절한다"};
 
-  int randomValue = random.nextInt(4); // 0 ~ 3
-  Guest guest = guests[randomValue];
 
 
   public void execute() {
     int menuNo;
 
-    /*
-*
-* 1. 빌려준다
-* 2. 안빌려준다
-* 3. 손님 정보 확인
-* */
     System.out.println("---------------------------------------------------------------");
     System.out.printf("띠링\uD83C\uDFB6 [%s] 손님이 입장하셨습니다.\n", guest.getType());
     System.out.printf("제목 \t \t \t \t 가격 개수 \n");
@@ -64,7 +58,7 @@ public class GuestCommand implements Command {
       System.out.print(bookInfo.getStock() + "\n");
     }
 
-    String bookName = bookInfoList.get(randomValue).getBookName();
+    String bookName = bookInfoList.get(random.nextInt(bookInfoList.size())).getBookName();
     System.out.printf("\n[%s] >> [%s] 책 빌릴 수 있을까요?\n",guest.getType(), bookName);
     System.out.println("---------------------------------------------------------------");
 
@@ -74,6 +68,7 @@ public class GuestCommand implements Command {
       try {
         menuNo = Prompt.inputInt(">");
         if (menuNo == 0) {
+          guest = guests[random.nextInt(guests.length)];
           return;
         }
         if (getMenuTitle(menuNo) == null) {
@@ -96,6 +91,10 @@ public class GuestCommand implements Command {
 
   public void reject(Guest guest){
     System.out.println("거절");
+  }
+
+  public void viewMemo(Guest guest){
+    System.out.println("메모");
   }
 
 
