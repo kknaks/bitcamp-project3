@@ -5,80 +5,86 @@ package bitcamp.project3;
 
 import bitcamp.project3.command.*;
 import bitcamp.project3.util.Prompt;
-import bitcamp.project3.vo.BookInfo;
-import bitcamp.project3.vo.Grandpa;
-import bitcamp.project3.vo.Guest;
-import bitcamp.project3.vo.Kid;
-import bitcamp.project3.vo.NoJob;
-import bitcamp.project3.vo.RentInfo;
-import bitcamp.project3.vo.StoreInfo;
+import bitcamp.project3.vo.*;
 
-import bitcamp.project3.vo.Student;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class App {
-    String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
-    Map<String, Command> commandMap = new HashMap<>();
+  String[] menus = new String[] {"손님받기", "재고확인", "상점가기", "메모하기", "일과정산"};
+  Map<String, Command> commandMap = new HashMap<>();
 
-    private App(){
-        List<BookInfo> bookInfos = new ArrayList<>();
-        List<RentInfo> rentInfos = new ArrayList<>();
-        List<StoreInfo> storeInfos  = new ArrayList<>();
-        List<Guest> guests = new ArrayList<>();
+  private App() {
+    List<BookInfo> bookList = new ArrayList<>();
+    bookList.add(new BookInfo("귀멸의칼날1", 2, 10));
+    bookList.add(new BookInfo("귀멸의칼날2", 3, 10));
+    bookList.add(new BookInfo("귀멸의칼날3", 1, 10));
+    bookList.add(new BookInfo("귀멸의칼날4", 5, 10));
+    bookList.add(new BookInfo("귀멸의칼날5", 6, 10));
 
-        commandMap.put("손님받기", new GuestCommand());
-        commandMap.put("재고확인", new StockCommand());
-        commandMap.put("상점가기", new StoreCommand());
-        commandMap.put("메모하기", new NoteCommand());
-        commandMap.put("일과정산", new DayOverCommand());
+    List<RentInfo> rentInfos = new ArrayList<>();
+    StoreInfo storeInfos = new StoreInfo(50, 50, 50);
+    List<Guest> guests = new ArrayList<>();
+    guests.add(new Kid());
+    guests.add(new NoJob());
+    guests.add(new Grandpa());
+    guests.add(new Student());
 
-    }
-    public static void main(String[] args) {
-        new App().execute();
-    }
 
-    public void execute() {
+    commandMap.put("손님받기", new GuestCommand());
+    commandMap.put("재고확인", new StockCommand(bookList));
+    commandMap.put("상점가기", new StoreCommand(bookList, storeInfos));
+    commandMap.put("메모하기", new NoteCommand(guests));
+    commandMap.put("일과정산", new DayOverCommand());
+
+  }
+
+  public static void main(String[] args) {
+    new App().execute();
+  }
+
+  static public void printMenu() {
+    System.out.println("제목");
+    System.out.println("가게현황");
+    System.out.println("날짜 출력");
+  }
+
+  public void execute() {
+    printMenu();
+
+    String command = "";
+    while (true) {
+      try {
+        command = Prompt.input("메인>");
+
+      } catch (NumberFormatException ex) {
+      }
+      if (command.equals("menu")) {
         printMenu();
-
-        String command = "";
-        while (true) {
-            try{
-                command = Prompt.input("메인>");
-
-            } catch (NumberFormatException ex){}
-            if (command.equals("menu")) {
-                printMenu();
-                continue;
-            }
-            int menuNo = Integer.parseInt(command);
-            String menuTitle = getMenuTitle(menuNo);
-            processMenu(menuTitle);
-        }
+        continue;
+      }
+      int menuNo = Integer.parseInt(command);
+      String menuTitle = getMenuTitle(menuNo);
+      processMenu(menuTitle);
     }
+  }
 
-    private void processMenu(String menuTitle){
-        Command command = commandMap.get(menuTitle);
-        if (command == null) {
-            System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
-            return;
-        }
-        command.execute();
+  private void processMenu(String menuTitle) {
+    Command command = commandMap.get(menuTitle);
+    if (command == null) {
+      System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
+      return;
     }
+    command.execute();
+  }
 
-    private boolean isValidateMenu(int menuNo) {
-        return menuNo >= 1 && menuNo <= menus.length;
-    }
+  private boolean isValidateMenu(int menuNo) {
+    return menuNo >= 1 && menuNo <= menus.length;
+  }
 
-    private String getMenuTitle(int menuNo) {
-        return isValidateMenu(menuNo) ? menus[menuNo - 1] : null;
-    }
-
-    static public void printMenu(){
-        System.out.println("제목");
-        System.out.println("가게현황");
-        System.out.println("날짜 출력");
-    }
+  private String getMenuTitle(int menuNo) {
+    return isValidateMenu(menuNo) ? menus[menuNo - 1] : null;
+  }
 }
