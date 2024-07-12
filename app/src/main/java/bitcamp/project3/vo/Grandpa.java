@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Grandpa extends AbstractGuest{
 
-    public Grandpa(List<String> list) {
-        super("할아버지", list,1, 1);
+    public Grandpa() {
+        super("할아버지",1, 1);
     }
 
 }

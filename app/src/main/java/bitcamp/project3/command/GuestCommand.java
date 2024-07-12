@@ -1,10 +1,13 @@
 package bitcamp.project3.command;
 
 import bitcamp.project3.util.Prompt;
+import bitcamp.project3.vo.BookInfo;
 import bitcamp.project3.vo.Grandpa;
 import bitcamp.project3.vo.Guest;
 import bitcamp.project3.vo.Kid;
+import bitcamp.project3.vo.MemoInfo;
 import bitcamp.project3.vo.NoJob;
+import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.Student;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,24 +16,27 @@ import java.util.Random;
 
 public class GuestCommand implements Command {
 
-  String[] menus = {"특징보기", "대출정보", "손님호출"};
+  String[] menus = {"손님유형", "도서정보","대여정보", "메모정보", "호출하기"};
+
   private final Random random = new Random();
   int randomValue = random.nextInt(4); // 0 ~ 3
 
   Guest[] guests = {
-      new Kid(new ArrayList<>()),
-      new Student(new ArrayList<>()),
-      new NoJob(new ArrayList<>()),
-      new Grandpa(new ArrayList<>())
+      new Kid(),
+      new Student(),
+      new NoJob(),
+      new Grandpa()
   };
 
   Guest guest = guests[randomValue];
   Map<Integer, MenuAction> menuMap = new HashMap<>();
 
   public GuestCommand() {
-    menuMap.put(1, () -> viewInfo(guest));
-    menuMap.put(2, () -> bookRental(guest));
-    menuMap.put(3, () -> call(guest));
+    menuMap.put(1, () -> guestInfo(guest));
+    menuMap.put(2, () -> bookInfo(guest));
+    menuMap.put(3, () -> rentInfo(guest));
+    menuMap.put(4, () -> memoInfo(guest));
+    menuMap.put(5, () -> callGuest(guest));
   }
 
   public void execute(){
@@ -63,17 +69,36 @@ public class GuestCommand implements Command {
     }
   }
 
-  public void viewInfo(Guest guest){
+  public void guestInfo(Guest guest){
     System.out.println(guest.toString(guest.getType()));
   }
 
-  public void bookRental(Guest guest){
-    System.out.printf("%s 손님의 도서 대출\n", guest.getType());
+  public void rentInfo(Guest guest){
+    System.out.printf("%s 손님의 대여 정보\n", guest.getType());
+    for (RentInfo rent : guest.getRentInfos()){
+      System.out.println(rent.getBookName());
+    }
   }
 
-  public void call(Guest guest){
+  public void bookInfo(Guest guest){
+    System.out.printf("%s 손님의 도서 정보\n", guest.getType());
+    for (BookInfo book : guest.getBookInfos()){
+      System.out.println(book.getBookName());
+    }
+  }
+
+  public void callGuest(Guest guest){
+    System.out.println("호출");
     System.out.printf("%s 손님 일로와보슈!!\n", guest.getType());
   }
+
+  public void memoInfo(Guest guest){
+    System.out.printf("%s 손님의 메모 정보\n", guest.getType());
+    for (MemoInfo memo : guest.getMemos()){
+      System.out.println(memo.getMemo() + memo.getWriteDate());
+    }
+  }
+
 
   @Override
   public String[] getMenus() {

@@ -1,17 +1,22 @@
 package bitcamp.project3.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractGuest implements Guest{
 
     protected String type;
-    protected List<String> memos;
+    protected List<MemoInfo> memos;
+    protected List<RentInfo> rentInfos;
+    protected List<BookInfo> bookInfos;
     protected int lossForce;
     protected int reputation;
 
-    protected AbstractGuest(String type, List<String> memos, int lossForce, int reputation) {
+    protected AbstractGuest(String type, int lossForce, int reputation) {
         this.type = type;
-        this.memos = memos;
+        this.memos = new ArrayList<>();
+        this.rentInfos = new ArrayList<>();
+        this.bookInfos = new ArrayList<>();
         this.lossForce = lossForce;
         this.reputation = reputation;
     }
@@ -27,12 +32,32 @@ public abstract class AbstractGuest implements Guest{
     }
 
     @Override
-    public List<String> getMemos() {
+    public void setRentInfos(RentInfo rentInfo) {
+        this.rentInfos.add(rentInfo);
+    }
+
+    @Override
+    public void setBookInfos(BookInfo bookInfo) {
+        this.bookInfos.add(bookInfo);
+    }
+
+    @Override
+    public List<RentInfo> getRentInfos() {
+        return rentInfos.stream().toList();
+    }
+
+    @Override
+    public List<BookInfo> getBookInfos() {
+        return bookInfos.stream().toList();
+    }
+
+    @Override
+    public List<MemoInfo> getMemos() {
         return memos.stream().toList();
     }
 
     @Override
-    public void setMemo(String memo) {
+    public void setMemo(MemoInfo memo) {
         memos.add(memo);
     }
 
@@ -48,11 +73,10 @@ public abstract class AbstractGuest implements Guest{
 
     @Override
     public String toString(String guest) {
-        return guest +"{" +
-            "type='" + type + '\'' +
-            ", memos=" + memos +
-            ", lossForce=" + lossForce +
-            ", reputation=" + reputation +
-            '}';
+        return type +
+            ": 메모=" + memos +
+            ", 대출정보=" + rentInfos +
+            ", 도서정보=" + bookInfos;
     }
+
 }

@@ -1,12 +1,10 @@
 package bitcamp.project3.vo;
 
-import java.util.List;
-
 public class Student extends AbstractGuest {
 
 
-    public Student(List<String> list) {
-        super("학생", list,1, 1);
+    public Student() {
+        super("학생",1, 1);
 
     }
 
