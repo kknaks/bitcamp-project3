@@ -58,12 +58,15 @@ public class GuestCommand implements Command {
     System.out.println("---------------------------------------------------------------");
     System.out.printf("띠링\uD83C\uDFB6 [%s] 손님이 입장하셨습니다.\n", guest.getType());
     System.out.printf("제목 \t \t \t \t 가격 개수 \n");
+
     for (BookInfo bookInfo : bookInfoList){
       System.out.print(bookInfo.getBookName() + "  ");
       System.out.print(bookInfo.getPrice() + "   ");
       System.out.print(bookInfo.getStock() + "\n");
     }
-    System.out.printf("[%s] >> [%s] 책 빌릴 수 있을까요?\n",guest.getType(), bookInfoList.get(randomValue).getBookName());
+
+    String bookName = bookInfoList.get(randomValue).getBookName();
+    System.out.printf("\n[%s] >> [%s] 책 빌릴 수 있을까요?\n",guest.getType(), bookName);
     System.out.println("---------------------------------------------------------------");
 
     printMenus();
