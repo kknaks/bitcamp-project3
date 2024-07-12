@@ -58,8 +58,19 @@ public class StockCommand implements Command {
     }
     try {
       int menuNo = Prompt.inputInt(">");
-      
-
+      if (menuNo > bookList.size() || menuNo < 0) {
+        System.out.println("없는책");
+      } else {
+        BookInfo book = bookList.get(menuNo - 1);
+        int change = storeInfo.getAccount() - book.getPrice();
+        if (change < 0) {
+          System.out.println("돈없음");
+          return;
+        }
+        storeInfo.setAccount(change);
+        bookList.get(menuNo - 1).setStock(book.getStock() + 1);
+        System.out.println("구매완료");
+      }
     } catch (NumberFormatException exception) {
       System.out.println("숫자만 입력해 주세요.");
     }
