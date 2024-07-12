@@ -22,11 +22,7 @@ public interface Guest {
 
     int getReputation();
 
-    List<RentInfo> getRentInfos();
-
     List<BookInfo> getBookInfos();
-
-    void setRentInfos(RentInfo rentInfo);
 
     int getRentPeriod();
 

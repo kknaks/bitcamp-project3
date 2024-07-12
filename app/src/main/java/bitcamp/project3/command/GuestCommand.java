@@ -19,7 +19,7 @@ public class GuestCommand implements Command {
 
   // 책은 맵으로 받기 -> 키 : 책이름 , 값 : 수량
 
-  String[] menus = {"손님유형", "도서정보", "대여정보", "메모정보", "호출하기"};
+  String[] menus = {"빌려준다", "거절한다"};
 
   private final Random random = new Random();
   int randomValue = random.nextInt(4); // 0 ~ 3
@@ -35,19 +35,25 @@ public class GuestCommand implements Command {
   Map<Integer, MenuAction> menuMap = new HashMap<>();
 
   public GuestCommand() {
-    menuMap.put(1, () -> guestInfo(guest));
-    menuMap.put(2, () -> bookInfo(guest));
-    menuMap.put(3, () -> rentInfo(guest));
-    menuMap.put(4, () -> memoInfo(guest));
-    menuMap.put(5, () -> callGuest(guest));
+    menuMap.put(1, () -> accept(guest));
+    menuMap.put(2, () -> reject(guest));
   }
 
   public void execute(){
     int menuNo;
 
+    /*
+손님이 입장하셨습니다
+무슨 책 빌릴 수 있나요
+*
+* 1. 빌려준다
+* 2. 안빌려준다
+* 3. 손님 정보 확인
+* */
     System.out.println("---------------------------------------------------------------");
     System.out.printf("띠링\uD83C\uDFB6 [%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.println("손님이 왔다... 나의 반응은?");
+    System.out.println("책 목록 보여주기");
+    System.out.printf("[%s] >> [나루토] 책 빌릴 수 있을까요?\n", guest.getType());
     System.out.println("---------------------------------------------------------------");
 
     printMenus();
@@ -72,23 +78,15 @@ public class GuestCommand implements Command {
     }
   }
 
-  public void guestInfo(Guest guest){
-    System.out.println(guest.toString(guest.getType()));
+  public void accept(Guest guest){
+    System.out.println("승락");
   }
 
-  public void rentInfo(Guest guest){
-    System.out.printf("%s 손님의 대여 정보\n", guest.getType());
-    for (RentInfo rent : guest.getRentInfos()){
-      System.out.println(rent.getBookName());
-    }
+  public void reject(Guest guest){
+    System.out.println("거절");
   }
 
-  public void bookInfo(Guest guest){
-    System.out.printf("%s 손님의 도서 정보\n", guest.getType());
-    for (BookInfo book : guest.getBookInfos()){
-      System.out.println(book.getBookName());
-    }
-  }
+
 
 
 /*
@@ -101,7 +99,7 @@ public class GuestCommand implements Command {
 
     System.out.println("---------------------------------------------------------------");
     System.out.printf("[%s] >> [%s] 있나요?\n", guest.getType(), bookTitle);
-    System.out.printf("손님이 [%s] 책을 찾는다...\n", "원피스");
+    System.out.printf("손님이 [%s] 책을 찾는다...\n", bookTitle);
     System.out.println("---------------------------------------------------------------");
 
     System.out.println("1. 빌려준다 [명성+10, 분실 O, 피로도+10]");
@@ -120,7 +118,7 @@ public class GuestCommand implements Command {
             rentInfo.setBookName(bookTitle);
             rentInfo.setRentStartDate(LocalDate.now());
             rentInfo.setRentEndDate(rentPeriod);
-            guest.setRentInfos(rentInfo);
+            rentInfos.add(rentInfo);
             break;
           case 2:
             System.out.println("안 빌려줄거야 명성하락, 피로도업");
