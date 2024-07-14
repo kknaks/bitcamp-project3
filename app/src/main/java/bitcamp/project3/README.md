@@ -5,8 +5,13 @@
 ### 1. GuestCommand
 
 - accept에서 guest.setMemo(memoInfo); 부분에 게스트가 선언 안된거 같아요
-- 게스트에서 static Guest[] guests = {new Kid(), new Student(), new NoJob(), new Grandpa()};
-- 따로 선언해서 App에 있는 게스트랑 커맨드에 잇는 게스트랑 다른 주소로 접근하는 거 같습니다.
+  => 이부분 게스트는 최상단에 생성되어 있습니다!
+
+~~게스트에서 static Guest[] guests = {new Kid(), new Student(), new NoJob(), new Grandpa()};
+따로 선언해서 App에 있는 게스트랑 커맨드에 잇는 게스트랑 다른 주소로 접근하는 거 같습니다.~~
+  => app에서 생성된 게스트 리스트로 넘어오게 수정 완료.
+
+
 
 ## 만화방 관리자 아저씨 테마
 

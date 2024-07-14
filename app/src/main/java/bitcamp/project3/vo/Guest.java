@@ -16,7 +16,7 @@ public interface Guest {
 
   void setMemo(MemoInfo memo);
 
-  int getLossForce();
+  double getLossForce();
 
   int getReputation();
 
@@ -24,6 +24,9 @@ public interface Guest {
 
     void setRentPeriod(int rentPeriod);
 
+  int getLossCount();
+
+  void setLossCount(int lossCount);
 
 
 }

@@ -7,14 +7,16 @@ public abstract class AbstractGuest implements Guest{
 
     protected String type;
     protected List<MemoInfo> memos;
-    protected int lossForce;
+    protected double lossForce;
+    protected int lossCount;
     protected int reputation;
     protected int rentPeriod;
 
-    protected AbstractGuest(String type, int lossForce, int reputation, int rentPeriod) {
+    protected AbstractGuest(String type, double lossForce, int reputation, int rentPeriod) {
         this.type = type;
         this.memos = new ArrayList<>();
         this.lossForce = lossForce;
+        this.lossCount = 0;
         this.reputation = reputation;
         this.rentPeriod = rentPeriod;
     }
@@ -40,7 +42,7 @@ public abstract class AbstractGuest implements Guest{
     }
 
     @Override
-    public int getLossForce() {
+    public double getLossForce() {
         return lossForce;
     }
 
@@ -59,5 +61,13 @@ public abstract class AbstractGuest implements Guest{
         this.rentPeriod = rentPeriod;
     }
 
+    @Override
+    public int getLossCount() {
+        return this.lossCount;
+    }
 
+    @Override
+    public void setLossCount(int lossCount) {
+        this.lossCount = lossCount;
+    }
 }

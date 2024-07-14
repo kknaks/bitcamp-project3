@@ -22,7 +22,7 @@ public class App {
   List<Guest> guests = new ArrayList<>();
 
   private App() {
-    commandMap.put("손님받기", new GuestCommand(bookList, rentInfos, storeInfos));
+    commandMap.put("손님받기", new GuestCommand(bookList, rentInfos, storeInfos, guests));
     commandMap.put("운영관리", new OperationCommand(bookList, rentInfos, storeInfos));
     commandMap.put("메모하기", new NoteCommand(guests, storeInfos));
     commandMap.put("일과정산", new DayOverCommand(storeInfos));

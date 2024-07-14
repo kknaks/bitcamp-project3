@@ -64,3 +64,5 @@ c
 3app/src/main/java/bitcamp/project3/vo/MemoInfo.java,1/a/1aaa5907dfa816f4452330cc78a16a5f7a98d867
 e
 5app/src/main/java/bitcamp/project3/util/BookList.java,a/0/a07fb1feec60d34248656fbd89d2407f59c784ab
+g
+7app/src/main/java/bitcamp/project3/util/RentalList.java,6/2/62b8cfdd2b6c94e1f07a7843f7feff12d959d552
