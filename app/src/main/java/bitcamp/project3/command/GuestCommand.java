@@ -39,7 +39,7 @@ public class GuestCommand implements Command {
 
     System.out.println("-------------------------");
     System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.printf("[%s] 손님의 책 분실 횟수 : [%d] ", guest.getType(), guest.getLossCount());
+    System.out.printf("[%s] 손님의 책 분실 횟수 : [%d]\n", guest.getType(), guest.getLossCount());
 
 
     for (RentInfo rentInfo : rentInfoList){
@@ -73,12 +73,12 @@ public class GuestCommand implements Command {
       executeMenu();
   }
 
-  public void accept(Guest guest) {
+  private void accept(Guest guest) {
     BookInfo book = getBook();
 
     if (book.getStock() == 0) {
       System.out.println("-------------------------");
-      System.out.printf("현재 [%s] 책 재고가 없습니다. 다음에 찾아주세요.\n", book.getBookName());
+      System.out.printf("[주인놈] >> 현재 [%s] 책 재고가 없습니다. 다음에 찾아주세요.\n", book.getBookName());
       System.out.println("-------------------------");
       storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
       storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
@@ -87,8 +87,7 @@ public class GuestCommand implements Command {
       System.out.println("-------------------------");
       System.out.printf("[%s] : [%s] 손님이 [%s] 책을 대여했습니다.\n"
           ,storeInfo.getDate(), guest.getType(),book.getBookName());
-      System.out.printf("대여 기간은 [%d]일입니다. [%s]일 까지 반납하세요!\n"
-          ,guest.getRentPeriod(), rentPeriod);
+      System.out.printf("[%s] 재고: [%d]권\n", book.getBookName(), book.getStock());
 
       RentInfo rentInfo = new RentInfo();
       rentInfo.setGuestType(guest.getType());
@@ -98,7 +97,8 @@ public class GuestCommand implements Command {
       rentInfoList.add(rentInfo);
       book.setStock(book.getStock() - 1);
 
-      System.out.printf("\n[%s] 재고: [%d]권\n", book.getBookName(), book.getStock());
+      System.out.printf("\n[주인놈] >> 대여 기간은 [%d]일입니다. [%s]일 까지 반납하세요!\n"
+          ,guest.getRentPeriod(), rentPeriod);
 
       storeInfo.setAccount(storeInfo.getAccount() + book.getPrice());
       storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
@@ -106,14 +106,14 @@ public class GuestCommand implements Command {
     }
   }
 
-  public void reject(Guest guest) {
-    System.out.println("죄송합니다. 다음에 찾아주세요.\n");
+  private void reject(Guest guest) {
+    System.out.println("[주인놈] >> 죄송합니다. 다음에 찾아주세요.\n");
 
     storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
     storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
   }
 
-  public void viewMemo(Guest guest) {
+  private void viewMemo(Guest guest) {
     if (guest.getMemos().isEmpty()) {
       System.out.println("-------------------------");
       System.out.println("등록된 메모가 없습니다.");
@@ -146,7 +146,6 @@ public class GuestCommand implements Command {
       }
     }
   }
-
 
   private BookInfo getBook() {
     for (BookInfo bookInfo : bookInfoList) {
@@ -196,9 +195,7 @@ public class GuestCommand implements Command {
       } catch (NumberFormatException exception) {
         System.out.println("숫자만 입력해 주세요.");
       }
-
     }
-
   }
 
 
