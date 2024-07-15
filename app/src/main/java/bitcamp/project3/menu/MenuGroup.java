@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import static bitcamp.project3.App.bookList;
+import static bitcamp.project3.App.storeInfos;
 
 public class MenuGroup extends AbstractMenu {
   Command command;
@@ -80,10 +81,22 @@ public class MenuGroup extends AbstractMenu {
   }
 
   private void printUI(String title) {
-    if (title.equals("손님받기")) {
-      ((GuestCommand) command).preExecute();
-      Guest guest = ((GuestCommand) command).getGuest();
-      String bookName = ((GuestCommand) command).getBookName();
+    switch (title) {
+      case "메인":
+        System.out.println("-------------------------");
+        System.out.println("[만화책방으로 건물주되기]");
+        System.out.println("-------------------------");
+        System.out.println("만화책방 현황");
+        System.out.printf("날  짜 : %s\n", storeInfos.getDate());
+        System.out.printf("자  금 : %s 원\n", storeInfos.getAccount());
+        System.out.printf("명  성 : %s 점\n", storeInfos.getReputation());
+        System.out.printf("피로도 : %s 점\n", storeInfos.getTiredness());
+        System.out.println("-------------------------");
+        break;
+      case "손님받기":
+        ((GuestCommand) command).preExecute();
+        Guest guest = ((GuestCommand) command).getGuest();
+        String bookName = ((GuestCommand) command).getBookName();
 
       System.out.println("-------------------------");
       System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
@@ -92,11 +105,12 @@ public class MenuGroup extends AbstractMenu {
       printStatus("분실력", guest.getLossForce(), 100);
       printStatus("분실수", guest.getLossCount());
 
-      guest.setRentPeriod(randomNum.randomDice());
-      bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
-      System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
-          guest.getRentPeriod());
-      System.out.println("-------------------------");
+        guest.setRentPeriod(randomNum.randomDice());
+        bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
+        System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
+            guest.getRentPeriod());
+        System.out.println("-------------------------");
+        break;
     }
   }
 

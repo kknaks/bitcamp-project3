@@ -29,6 +29,7 @@ public class GuestCommand implements Command {
   private int guestRandomValue;
   private Guest guest;
   private String bookName;
+  private int period;
 
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo,
       List<Guest> guests) {
@@ -75,6 +76,7 @@ public class GuestCommand implements Command {
           if (rentInfo.getGuestType().equals(guest.getType()) &&
               rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
               !rentInfo.isBookReturn()){
+
               checkLoss = randomZero.randomDice(guest.getLossForce());
 
               BookInfo book = getBookName(rentInfo.getBookName());
@@ -94,17 +96,16 @@ public class GuestCommand implements Command {
 
                 storeInfo.setTiredness(storeInfo.getTiredness() - guest.getTiredness());
               }
+          }else{
+            System.out.println("---------------------------------------log");
           }
         }
 
     guest.setRentPeriod(randomNum.randomDice());
 
-    System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
-        guest.getRentPeriod());
-    System.out.println("-------------------------");
-
     switch (menuName) {
       case "빌려준다":
+
         this.accept(guest);
         break;
       case "거절한다":
@@ -139,7 +140,6 @@ public class GuestCommand implements Command {
       rentInfo.setRentStartDate(storeInfo.getDate());
       rentInfo.setRentEndDate(rentPeriod);
       rentInfoList.add(rentInfo);
-      book.setStock(book.getStock() - 1);
 
       System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n",
           storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
