@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GuestCommand implements Command {
 
-  static String bookName;
+
   List<Guest> guests;
   //String[] menus = {"빌려준다", "거절한다"};
   List<BookInfo> bookList;
@@ -26,7 +26,9 @@ public class GuestCommand implements Command {
   RandomAction randomNum = new RandomNum();
   RandomAction randomZero = new RandomZero();
 
-
+  private int guestRandomValue;
+  private Guest guest;
+  private String bookName;
 
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo,
       List<Guest> guests) {
@@ -36,12 +38,39 @@ public class GuestCommand implements Command {
     this.guests = guests;
   }
 
+  public String getBookName() {
+    return bookName;
+  }
+
+  public void setBookName(String bookName) {
+    this.bookName = bookName;
+  }
+
+  public int getGuestRandomValue() {
+    return guestRandomValue;
+  }
+
+  public void setGuestRandomValue(int guestRandomValue) {
+    this.guestRandomValue = guestRandomValue;
+  }
+
+  public Guest getGuest() {
+    return guest;
+  }
+
+  public void setGuest(Guest guest) {
+    this.guest = guest;
+  }
+
+  public void preExecute() {
+    setGuestRandomValue(randomNum.randomDice(guests.size()));
+    setGuest(guest = guests.get(guestRandomValue));
+    setBookName(bookList.get(randomNum.randomDice(bookList.size())).getBookName());
+  }
+
   public void execute(String menuName) {
     System.out.printf("[%s]\n", menuName);
-    int guestRandomValue = randomNum.randomDice(guests.size());
-    final Guest guest = guests.get(guestRandomValue);
     double checkLoss;
-
     System.out.println("-------------------------");
     System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
     printStatus("명성도", guest.getReputation(), 10);
@@ -49,12 +78,6 @@ public class GuestCommand implements Command {
     printStatus("분실력", guest.getLossForce(), 100);
     printStatus("분실수", guest.getLossCount());
 
-    for (RentInfo rentInfo : rentInfoList){
-      if (rentInfo.getGuestType().equals(guest.getType()) &&
-          rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
-          !rentInfo.isBookReturn()){
-
-          checkLoss = randomZero.randomDice(guest.getLossForce());
     //    for (RentInfo rentInfo : rentInfoList){
     //      if (rentInfo.getGuestType().equals(guest.getType()) &&
     //          rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
@@ -81,31 +104,20 @@ public class GuestCommand implements Command {
     //      }
     //    }
 
-          BookInfo book = getBookName(rentInfo.getBookName());
-          if (checkLoss == 0){
-            if (book != null){
-              System.out.printf("[%s] 손님이 [%s] 책을 분실했습니다.\n", guest.getType(), book.getBookName());
-              book.setStock(book.getStock() - 1);
-              storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
-              guest.setLossCount(guest.getLossCount() + 1);
-            }else{
-              System.out.println("[%s]는 없는 책입니다");
-            }
-          }else{
-            System.out.printf("[%s] 손님이 [%s] 책을 반납했습니다.\n", guest.getType(), book.getBookName());
-            book.setStock(book.getStock() + 1);
-            rentInfo.setBookReturn(true);
+    guest.setRentPeriod(randomNum.randomDice());
 
-            storeInfo.setTiredness(storeInfo.getTiredness() - guest.getTiredness());
-          }
-      }
+    System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
+        guest.getRentPeriod());
+    System.out.println("-------------------------");
+
+    switch (menuName) {
+      case "빌려준다":
+        this.accept(guest);
+        break;
+      case "거절한다":
+        this.reject(guest);
+        break;
     }
-      guest.setRentPeriod(randomNum.randomDice());
-      bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
-      System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName, guest.getRentPeriod());
-      System.out.println("-------------------------");
-
-      executeMenu();
   }
 
   private void accept(Guest guest) {
@@ -135,6 +147,9 @@ public class GuestCommand implements Command {
       rentInfo.setRentEndDate(rentPeriod);
       rentInfoList.add(rentInfo);
       book.setStock(book.getStock() - 1);
+
+      System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n",
+          storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
 
       storeInfo.setAccount(storeInfo.getAccount() + book.getPrice());
       storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
@@ -167,45 +182,16 @@ public class GuestCommand implements Command {
     return null;
   }
 
+    public static void printStatus(String name, int value, int maxValue) {
+        int barLength = 10;
+        int filledLength = (int) ((double) value / maxValue * barLength);
+        String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
 
-  private void executeMenu(){
-    int menuNo;
-
-    printMenus();
-    while (true) {
-      try {
-        menuNo = Prompt.inputInt(">");
-        if (menuNo == 0) {
-          return;
-        }
-        if (getMenuTitle(menuNo) == null) {
-          System.out.println("유효한 메뉴 번호가 아닙니다.");
-          continue;
-        }
-        MenuAction action = menuMap.get(menuNo);
-
-        if (action != null) {
-          action.execute();
-        }
-        break;
-      } catch (NumberFormatException exception) {
-        System.out.println("숫자만 입력해 주세요.");
-      }
+        System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
     }
-  }
 
-
-  public static void printStatus(String name, int value, int maxValue) {
-    int barLength = 10;
-    int filledLength = (int) ((double) value / maxValue * barLength);
-    String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
-
-    System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
-  }
-
-  public static void printStatus(String name, int value) {
-    System.out.printf("%s: %d                %n", name, value);
-  }
-
+    public static void printStatus(String name, int value) {
+        System.out.printf("%s: %d                %n", name, value);
+    }
 
 }
