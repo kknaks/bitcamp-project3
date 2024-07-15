@@ -43,8 +43,10 @@ public class GuestCommand implements Command {
 
     System.out.println("-------------------------");
     System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s%%]\n",
-        guest.getReputation(), guest.getTiredness(), guest.getLossCount(), guest.getLossForce());
+    printStatus("명성도", guest.getReputation(), 10);
+    printStatus("피로도", guest.getTiredness(), 10);
+    printStatus("분실력", guest.getLossForce(), 100);
+    printStatus("분실수", guest.getLossCount());
 
     for (RentInfo rentInfo : rentInfoList){
       if (rentInfo.getGuestType().equals(guest.getType()) &&
@@ -92,10 +94,14 @@ public class GuestCommand implements Command {
       storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
     } else {
       LocalDate rentPeriod = storeInfo.getDate().plusDays(guest.getRentPeriod());
-      System.out.println("-------------------------");
-      System.out.printf("[%s] : [%s] 손님이 [%s] 책을 대여했습니다.\n"
-          ,storeInfo.getDate(), guest.getType(),book.getBookName());
-      System.out.printf("[%s] 재고: [%d]권\n", book.getBookName(), book.getStock());
+      System.out.printf("[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n\n"
+          ,storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
+
+      System.out.println("------- 대여 정보 -------");
+      System.out.printf("날짜: %s%n", storeInfo.getDate());
+      System.out.printf("대여자: %s%n", guest.getType());
+      System.out.printf("대여 도서: %s%n", book.getBookName());
+      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock());
 
       RentInfo rentInfo = new RentInfo();
       rentInfo.setGuestType(guest.getType());
@@ -104,9 +110,6 @@ public class GuestCommand implements Command {
       rentInfo.setRentEndDate(rentPeriod);
       rentInfoList.add(rentInfo);
       book.setStock(book.getStock() - 1);
-
-      System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n"
-          ,storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
 
       storeInfo.setAccount(storeInfo.getAccount() + book.getPrice());
       storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
@@ -120,16 +123,6 @@ public class GuestCommand implements Command {
     storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
     storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
   }
-
-
-
-  private String percentFormat(int lossForce){
-    double lossRate = lossForce / 10.0;
-    NumberFormat percentFormat = NumberFormat.getPercentInstance();
-    percentFormat.setMinimumFractionDigits(0);
-    return percentFormat.format(lossRate);
-  }
-
 
   private BookInfo getBook() {
     for (BookInfo bookInfo : bookInfoList) {
@@ -176,6 +169,18 @@ public class GuestCommand implements Command {
     }
   }
 
+
+  public static void printStatus(String name, int value, int maxValue) {
+    int barLength = 10;
+    int filledLength = (int) ((double) value / maxValue * barLength);
+    String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
+
+    System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
+  }
+
+  public static void printStatus(String name, int value) {
+    System.out.printf("%s: %d                %n", name, value);
+  }
 
   @Override
   public String[] getMenus() {
