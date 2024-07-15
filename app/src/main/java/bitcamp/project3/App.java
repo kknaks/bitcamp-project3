@@ -28,8 +28,8 @@ public class App {
   private App() {
     setData(bookList, guests);
     MenuGroup guestMenu = new MenuGroup("손님받기", guestCommand);
-    guestMenu.add(new MenuItem("빌려준다.", guestCommand));
-    guestMenu.add(new MenuItem("거절한다.", guestCommand));
+    guestMenu.add(new MenuItem("빌려준다", guestCommand));
+    guestMenu.add(new MenuItem("거절한다", guestCommand));
     mainMenu.add(guestMenu);
 
     MenuGroup operationMenu = new MenuGroup("운영관리");

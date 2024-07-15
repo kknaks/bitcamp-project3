@@ -72,3 +72,5 @@ c
 3app/src/main/java/bitcamp/project3/util/Test03.java,4/8/481e71a529ff37bf1d7108a5a9e1983fe7c8339f
 i
 9app/src/main/java/bitcamp/project3/util/CreateRandom.java,9/6/964acdbe5775a530e50ae37e8b32f554e6c850c2
+f
+6app/src/main/java/bitcamp/project3/menu/MenuGroup.java,9/c/9c2498c107d609697833fa2723020d8782f7e062

@@ -87,8 +87,10 @@ public class MenuGroup extends AbstractMenu {
 
       System.out.println("-------------------------");
       System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-      System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s]\n", guest.getReputation(),
-          guest.getTiredness(), guest.getLossCount(), percentFormat(guest.getLossForce()));
+      printStatus("명성도", guest.getReputation(), 10);
+      printStatus("피로도", guest.getTiredness(), 10);
+      printStatus("분실력", guest.getLossForce(), 100);
+      printStatus("분실수", guest.getLossCount());
 
       guest.setRentPeriod(randomNum.randomDice());
       bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
@@ -131,5 +133,17 @@ public class MenuGroup extends AbstractMenu {
     NumberFormat percentFormat = NumberFormat.getPercentInstance();
     percentFormat.setMinimumFractionDigits(0);
     return percentFormat.format(lossRate);
+  }
+
+  public static void printStatus(String name, int value, int maxValue) {
+    int barLength = 10;
+    int filledLength = (int) ((double) value / maxValue * barLength);
+    String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
+
+    System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
+  }
+
+  public static void printStatus(String name, int value) {
+    System.out.printf("%s: %d                %n", name, value);
   }
 }

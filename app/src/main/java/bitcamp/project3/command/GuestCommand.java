@@ -71,38 +71,31 @@ public class GuestCommand implements Command {
   public void execute(String menuName) {
     System.out.printf("[%s]\n", menuName);
     double checkLoss;
-    System.out.println("-------------------------");
-    System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-    printStatus("명성도", guest.getReputation(), 10);
-    printStatus("피로도", guest.getTiredness(), 10);
-    printStatus("분실력", guest.getLossForce(), 100);
-    printStatus("분실수", guest.getLossCount());
+        for (RentInfo rentInfo : rentInfoList){
+          if (rentInfo.getGuestType().equals(guest.getType()) &&
+              rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
+              !rentInfo.isBookReturn()){
+              checkLoss = randomZero.randomDice(guest.getLossForce());
 
-    //    for (RentInfo rentInfo : rentInfoList){
-    //      if (rentInfo.getGuestType().equals(guest.getType()) &&
-    //          rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
-    //          !rentInfo.isBookReturn()){
-    //          checkLoss = randomZero.randomDice(guest.getLossForce());
-    //
-    //          BookInfo book = getBookName(rentInfo.getBookName());
-    //          if (checkLoss == 0){
-    //            if (book != null){
-    //              System.out.printf("[%s] 손님이 [%s] 책을 분실했습니다.\n", guest.getType(), book.getBookName());
-    //              book.setStock(book.getStock() - 1);
-    //              storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
-    //              guest.setLossCount(guest.getLossCount() + 1);
-    //            }else{
-    //              System.out.println("[%s]는 없는 책입니다");
-    //            }
-    //          }else{
-    //            System.out.printf("[%s] 손님이 [%s] 책을 반납했습니다.\n", guest.getType(), book.getBookName());
-    //            book.setStock(book.getStock() + 1);
-    //            rentInfo.setBookReturn(true);
-    //
-    //            storeInfo.setTiredness(storeInfo.getTiredness() - guest.getTiredness());
-    //          }
-    //      }
-    //    }
+              BookInfo book = getBookName(rentInfo.getBookName());
+              if (checkLoss == 0){
+                if (book != null){
+                  System.out.printf("[%s] 손님이 [%s] 책을 분실했습니다.\n", guest.getType(), book.getBookName());
+                  book.setStock(book.getStock() - 1);
+                  storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
+                  guest.setLossCount(guest.getLossCount() + 1);
+                }else{
+                  System.out.println("[%s]는 없는 책입니다");
+                }
+              }else{
+                System.out.printf("[%s] 손님이 [%s] 책을 반납했습니다.\n", guest.getType(), book.getBookName());
+                book.setStock(book.getStock() + 1);
+                rentInfo.setBookReturn(true);
+
+                storeInfo.setTiredness(storeInfo.getTiredness() - guest.getTiredness());
+              }
+          }
+        }
 
     guest.setRentPeriod(randomNum.randomDice());
 
@@ -138,7 +131,7 @@ public class GuestCommand implements Command {
       System.out.printf("날짜: %s%n", storeInfo.getDate());
       System.out.printf("대여자: %s%n", guest.getType());
       System.out.printf("대여 도서: %s%n", book.getBookName());
-      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock());
+      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock() - 1);
 
       RentInfo rentInfo = new RentInfo();
       rentInfo.setGuestType(guest.getType());
@@ -151,7 +144,7 @@ public class GuestCommand implements Command {
       System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n",
           storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
 
-      storeInfo.setAccount(storeInfo.getAccount() + book.getPrice());
+      storeInfo.setAccount(storeInfo.getAccount() + (guest.getRentPeriod() * 2));
       storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
       storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
     }
@@ -181,17 +174,5 @@ public class GuestCommand implements Command {
     }
     return null;
   }
-
-    public static void printStatus(String name, int value, int maxValue) {
-        int barLength = 10;
-        int filledLength = (int) ((double) value / maxValue * barLength);
-        String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
-
-        System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
-    }
-
-    public static void printStatus(String name, int value) {
-        System.out.printf("%s: %d                %n", name, value);
-    }
 
 }
