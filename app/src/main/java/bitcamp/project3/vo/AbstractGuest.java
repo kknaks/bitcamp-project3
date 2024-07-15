@@ -1,24 +1,20 @@
 package bitcamp.project3.vo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class AbstractGuest implements Guest{
 
     protected String type;
-    protected List<MemoInfo> memos;
-    protected double lossForce;
+    protected int lossForce;
     protected int lossCount;
     protected int reputation;
     protected int rentPeriod;
+    protected int tiredness;
 
-    protected AbstractGuest(String type, double lossForce, int reputation, int rentPeriod) {
+    protected AbstractGuest(String type, int lossForce, int reputation, int tiredness) {
         this.type = type;
-        this.memos = new ArrayList<>();
         this.lossForce = lossForce;
         this.lossCount = 0;
         this.reputation = reputation;
-        this.rentPeriod = rentPeriod;
+        this.tiredness = tiredness;
     }
 
     @Override
@@ -32,17 +28,7 @@ public abstract class AbstractGuest implements Guest{
     }
 
     @Override
-    public List<MemoInfo> getMemos() {
-        return memos.stream().toList();
-    }
-
-    @Override
-    public void setMemo(MemoInfo memo) {
-        memos.add(memo);
-    }
-
-    @Override
-    public double getLossForce() {
+    public int getLossForce() {
         return lossForce;
     }
 
@@ -52,13 +38,13 @@ public abstract class AbstractGuest implements Guest{
     }
 
     @Override
-    public int getRentPeriod() {
-        return this.rentPeriod;
+    public void setRentPeriod(int rentPeriod) {
+        this.rentPeriod = rentPeriod;
     }
 
     @Override
-    public void setRentPeriod(int rentPeriod) {
-        this.rentPeriod = rentPeriod;
+    public int getRentPeriod() {
+        return this.rentPeriod;
     }
 
     @Override
@@ -69,5 +55,15 @@ public abstract class AbstractGuest implements Guest{
     @Override
     public void setLossCount(int lossCount) {
         this.lossCount = lossCount;
+    }
+
+    @Override
+    public int getTiredness() {
+        return this.tiredness;
+    }
+
+    @Override
+    public void setTiredness(int tiredness) {
+        this.tiredness = tiredness;
     }
 }

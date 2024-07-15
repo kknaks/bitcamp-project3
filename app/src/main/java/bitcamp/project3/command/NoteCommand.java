@@ -23,7 +23,7 @@ public class NoteCommand implements Command {
   public void execute() {
     for (int i = 0; i < guestList.size(); i++) {
       Guest guest = guestList.get(i);
-      menuMap.put(i + 1, () -> note(guest));
+//      menuMap.put(i + 1, () -> note(guest));
     }
     while (true) {
       printMenus();
@@ -39,15 +39,15 @@ public class NoteCommand implements Command {
       menuMap.get(menuNo).execute();
     }
   }
-
-  public void note(Guest guest) {
-    String comment = Prompt.input("메모할 사항 :");
-    MemoInfo memo = new MemoInfo();
-    memo.setMemo(comment);
-    memo.setWriteDate(storeInfos.getDate());
-    guest.setMemo(memo);
-    System.out.println("등록완료");
-  }
+//
+//  public void note(Guest guest) {
+//    String comment = Prompt.input("메모할 사항 :");
+//    MemoInfo memo = new MemoInfo();
+//    memo.setMemo(comment);
+//    memo.setWriteDate(storeInfos.getDate());
+//    guest.setMemo(memo);
+//    System.out.println("등록완료");
+//  }
 
   @Override
   public String[] getMenus() {

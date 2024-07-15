@@ -66,3 +66,9 @@ e
 5app/src/main/java/bitcamp/project3/util/BookList.java,a/0/a07fb1feec60d34248656fbd89d2407f59c784ab
 g
 7app/src/main/java/bitcamp/project3/util/RentalList.java,6/2/62b8cfdd2b6c94e1f07a7843f7feff12d959d552
+i
+9app/src/main/java/bitcamp/project3/util/RandomAction.java,e/a/ea299fd4ac2c64ff3b3266009afb7a59666cd37d
+c
+3app/src/main/java/bitcamp/project3/util/Test03.java,4/8/481e71a529ff37bf1d7108a5a9e1983fe7c8339f
+i
+9app/src/main/java/bitcamp/project3/util/CreateRandom.java,9/6/964acdbe5775a530e50ae37e8b32f554e6c850c2

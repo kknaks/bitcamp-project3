@@ -12,11 +12,7 @@ public interface Guest {
 
   void setType(String type);
 
-  List<MemoInfo> getMemos();
-
-  void setMemo(MemoInfo memo);
-
-  double getLossForce();
+  int getLossForce();
 
   int getReputation();
 
@@ -27,6 +23,9 @@ public interface Guest {
   int getLossCount();
 
   void setLossCount(int lossCount);
+
+  int getTiredness();
+  void setTiredness(int tiredness);
 
 
 }
