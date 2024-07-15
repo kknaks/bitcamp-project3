@@ -3,30 +3,45 @@
  */
 package bitcamp.project3;
 
-import bitcamp.project3.command.*;
-import bitcamp.project3.util.Prompt;
+import bitcamp.project3.command.DayOverCommand;
+import bitcamp.project3.command.GuestCommand;
+import bitcamp.project3.command.OperationCommand;
+import bitcamp.project3.menu.MenuGroup;
+import bitcamp.project3.menu.MenuItem;
 import bitcamp.project3.vo.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class App {
-  String[] menus = new String[] {"손님받기", "운영관리", "메모하기", "일과정산", "변수확인"};
-  //  Stack menuPath = new Stack();
-  Map<String, Command> commandMap = new HashMap<>();
-  List<BookInfo> bookList = new ArrayList<>();
+  static public List<BookInfo> bookList = new ArrayList<>();
+  static public List<Guest> guests = new ArrayList<>();
   List<RentInfo> rentInfos = new ArrayList<>();
   StoreInfo storeInfos = new StoreInfo();
-  List<Guest> guests = new ArrayList<>();
+
+  GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guests);
+  OperationCommand operationCommand = new OperationCommand(bookList, rentInfos, storeInfos);
+  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos);
+
+  MenuGroup mainMenu = new MenuGroup("메인");
 
   private App() {
-    commandMap.put("손님받기", new GuestCommand(bookList, rentInfos, storeInfos, guests));
-    commandMap.put("운영관리", new OperationCommand(bookList, rentInfos, storeInfos));
-    commandMap.put("메모하기", new NoteCommand(guests, storeInfos));
-    commandMap.put("일과정산", new DayOverCommand(storeInfos));
     setData(bookList, guests);
+    MenuGroup guestMenu = new MenuGroup("손님받기", guestCommand);
+    guestMenu.add(new MenuItem("빌려준다.", guestCommand));
+    guestMenu.add(new MenuItem("거절한다.", guestCommand));
+    mainMenu.add(guestMenu);
+
+    MenuGroup operationMenu = new MenuGroup("운영관리");
+    operationMenu.add(new MenuItem("재고조회", operationCommand));
+    operationMenu.add(new MenuItem("서점가기", operationCommand));
+    operationMenu.add(new MenuItem("대출현황", operationCommand));
+    mainMenu.add(operationMenu);
+
+    mainMenu.add(new MenuItem("일과정산", dayOverCommand));
+
+    //MenuGroup adminMenu = new MenuGroup("관리자메뉴");
+    mainMenu.setExitMenuTitle("종료");
   }
 
   public static void main(String[] args) {
@@ -47,25 +62,13 @@ public class App {
   }
 
   public void execute() {
-    //    menuPath.push("메인");
-    String command = "";
-    while (true) {
-      //System.out.println(guests.get(0).getMemos()); // 확인용
-      printInfo();
-      printMenu();
-      try {
-        command = Prompt.input("메인>");
-
-      } catch (NumberFormatException ex) {
-      }
-      if (command.equals("menu")) {
-        printMenu();
-        continue;
-      }
-      int menuNo = Integer.parseInt(command);
-      String menuTitle = getMenuTitle(menuNo);
-      processMenu(menuTitle);
-    }
+    printInfo();
+    mainMenu.execute();
+    //    try {
+    //      mainMenu.execute();
+    //    } catch (Exception ex) {
+    //      System.out.println("실행 오류!");
+    //    }
   }
 
   public void printInfo() {
@@ -77,31 +80,6 @@ public class App {
     System.out.printf("자  금 : %s 원\n", storeInfos.getAccount());
     System.out.printf("명  성 : %s 점\n", storeInfos.getReputation());
     System.out.printf("피로도 : %s 점\n", storeInfos.getTiredness());
-  }
-
-  public void printMenu() {
     System.out.println("-------------------------");
-    System.out.println("메뉴");
-    for (int i = 0; i < menus.length; i++) {
-      System.out.printf("%d. %s\n", (i + 1), menus[i]);
-    }
-    System.out.println("-------------------------");
-  }
-
-  private void processMenu(String menuTitle) {
-    Command command = commandMap.get(menuTitle);
-    if (command == null) {
-      System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
-      return;
-    }
-    command.execute();
-  }
-
-  private boolean isValidateMenu(int menuNo) {
-    return menuNo >= 1 && menuNo <= menus.length;
-  }
-
-  private String getMenuTitle(int menuNo) {
-    return isValidateMenu(menuNo) ? menus[menuNo - 1] : null;
   }
 }

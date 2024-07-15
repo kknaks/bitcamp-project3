@@ -11,7 +11,7 @@ public class DayOverCommand implements Command {
   }
 
   @Override
-  public void execute() {
+  public void execute(String menuName) {
     System.out.println("------영업종료--------");
     System.out.println("------정산내역--------");
     //정산내역 정리하기
@@ -25,10 +25,5 @@ public class DayOverCommand implements Command {
     //북리스트에서 분실한 책 수 만큼 빼기
     System.out.println("-------------------------");
     storeInfos.setDate(storeInfos.getDate().plusDays(1));
-  }
-
-  @Override
-  public String[] getMenus() {
-    return new String[0];
   }
 }
