@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GuestCommand implements Command {
 
-  static String bookName;
+
   List<Guest> guests;
   //String[] menus = {"빌려준다", "거절한다"};
   List<BookInfo> bookList;
@@ -26,7 +26,9 @@ public class GuestCommand implements Command {
   RandomAction randomNum = new RandomNum();
   RandomAction randomZero = new RandomZero();
 
-
+  private int guestRandomValue;
+  private Guest guest;
+  private String bookName;
 
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo,
       List<Guest> guests) {
@@ -36,12 +38,39 @@ public class GuestCommand implements Command {
     this.guests = guests;
   }
 
+  public String getBookName() {
+    return bookName;
+  }
+
+  public void setBookName(String bookName) {
+    this.bookName = bookName;
+  }
+
+  public int getGuestRandomValue() {
+    return guestRandomValue;
+  }
+
+  public void setGuestRandomValue(int guestRandomValue) {
+    this.guestRandomValue = guestRandomValue;
+  }
+
+  public Guest getGuest() {
+    return guest;
+  }
+
+  public void setGuest(Guest guest) {
+    this.guest = guest;
+  }
+
+  public void preExecute() {
+    setGuestRandomValue(randomNum.randomDice(guests.size()));
+    setGuest(guest = guests.get(guestRandomValue));
+    setBookName(bookList.get(randomNum.randomDice(bookList.size())).getBookName());
+  }
+
   public void execute(String menuName) {
     System.out.printf("[%s]\n", menuName);
-    int guestRandomValue = randomNum.randomDice(guests.size());
-    final Guest guest = guests.get(guestRandomValue);
     double checkLoss;
-
     System.out.println("-------------------------");
     System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
     System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s]\n", guest.getReputation(),
@@ -74,7 +103,7 @@ public class GuestCommand implements Command {
     //    }
 
     guest.setRentPeriod(randomNum.randomDice());
-    bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
+
     System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
         guest.getRentPeriod());
     System.out.println("-------------------------");
@@ -88,7 +117,7 @@ public class GuestCommand implements Command {
         break;
     }
   }
-  
+
   private void accept(Guest guest) {
     BookInfo book = getBook();
 

@@ -1,12 +1,16 @@
 package bitcamp.project3.menu;
 
 import bitcamp.project3.command.Command;
+import bitcamp.project3.command.GuestCommand;
 import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
+import bitcamp.project3.vo.Guest;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import static bitcamp.project3.App.bookList;
 
 public class MenuGroup extends AbstractMenu {
   Command command;
@@ -77,7 +81,20 @@ public class MenuGroup extends AbstractMenu {
 
   private void printUI(String title) {
     if (title.equals("손님받기")) {
+      ((GuestCommand) command).preExecute();
+      Guest guest = ((GuestCommand) command).getGuest();
+      String bookName = ((GuestCommand) command).getBookName();
 
+      System.out.println("-------------------------");
+      System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
+      System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s]\n", guest.getReputation(),
+          guest.getTiredness(), guest.getLossCount(), percentFormat(guest.getLossForce()));
+
+      guest.setRentPeriod(randomNum.randomDice());
+      bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
+      System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
+          guest.getRentPeriod());
+      System.out.println("-------------------------");
     }
   }
 
