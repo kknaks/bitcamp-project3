@@ -6,14 +6,12 @@ import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.StoreInfo;
 
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OperationCommand implements Command {
 
-  String[] menus = {"재고조회", "서점가기", "대출현황"};
-  Map<Integer, MenuAction> menuMap = new HashMap<>();
+  //String[] menus = {"재고조회", "서점가기", "대출현황"};
+  //Map<Integer, MenuAction> menuMap = new HashMap<>();
   private List<BookInfo> bookList;
   private List<RentInfo> rentList;
   private StoreInfo storeInfo;
@@ -67,26 +65,18 @@ public class OperationCommand implements Command {
     return sb.toString();
   }
 
-  public void execute() {
-    menuMap.put(1, this::checkStock);
-    menuMap.put(2, this::bookStore);
-    menuMap.put(3, this::checkRent);
-
-    while (true) {
-      printMenus();
-      try {
-        int menuNo = Prompt.inputInt("메인>");
-        if (menuNo == 0) {
-          return;
-        }
-        if (getMenuTitle(menuNo) == null) {
-          System.out.println("유효한 메뉴 값이 아닙니다.");
-          continue;
-        }
-        menuMap.get(menuNo).execute();
-      } catch (NumberFormatException exception) {
-        System.out.println("숫자만 입력해 주세요.");
-      }
+  public void execute(String menuName) {
+    System.out.printf("[%s]\n", menuName);
+    switch (menuName) {
+      case "재고조회":
+        this.checkStock();
+        break;
+      case "서점가기":
+        this.bookStore();
+        break;
+      case "대출현황":
+        this.checkRent();
+        break;
     }
   }
 
@@ -162,9 +152,5 @@ public class OperationCommand implements Command {
     }
   }
 
-  @Override
-  public String[] getMenus() {
-    return menus;
-  }
 }
 
