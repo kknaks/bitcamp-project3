@@ -16,20 +16,18 @@ import java.util.List;
 public class App {
   static public List<BookInfo> bookList = new ArrayList<>();
   static public List<Guest> guests = new ArrayList<>();
+  static public StoreInfo storeInfos = new StoreInfo();
   List<RentInfo> rentInfos = new ArrayList<>();
-  StoreInfo storeInfos = new StoreInfo();
-
   GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guests);
   OperationCommand operationCommand = new OperationCommand(bookList, rentInfos, storeInfos);
   DayOverCommand dayOverCommand = new DayOverCommand(storeInfos);
-
   MenuGroup mainMenu = new MenuGroup("메인");
 
   private App() {
     setData(bookList, guests);
     MenuGroup guestMenu = new MenuGroup("손님받기", guestCommand);
-    guestMenu.add(new MenuItem("빌려준다.", guestCommand));
-    guestMenu.add(new MenuItem("거절한다.", guestCommand));
+    guestMenu.add(new MenuItem("빌려준다", guestCommand));
+    guestMenu.add(new MenuItem("거절한다", guestCommand));
     mainMenu.add(guestMenu);
 
     MenuGroup operationMenu = new MenuGroup("운영관리");
@@ -62,24 +60,10 @@ public class App {
   }
 
   public void execute() {
-    printInfo();
-    mainMenu.execute();
-    //    try {
-    //      mainMenu.execute();
-    //    } catch (Exception ex) {
-    //      System.out.println("실행 오류!");
-    //    }
-  }
-
-  public void printInfo() {
-    System.out.println("-------------------------");
-    System.out.println("[만화책방으로 건물주되기]");
-    System.out.println("-------------------------");
-    System.out.println("만화책방 현황");
-    System.out.printf("날  짜 : %s\n", storeInfos.getDate());
-    System.out.printf("자  금 : %s 원\n", storeInfos.getAccount());
-    System.out.printf("명  성 : %s 점\n", storeInfos.getReputation());
-    System.out.printf("피로도 : %s 점\n", storeInfos.getTiredness());
-    System.out.println("-------------------------");
+    try {
+      mainMenu.execute();
+    } catch (Exception ex) {
+      System.out.println("실행 오류!");
+    }
   }
 }

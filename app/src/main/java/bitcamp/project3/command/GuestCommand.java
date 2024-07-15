@@ -29,6 +29,7 @@ public class GuestCommand implements Command {
   private int guestRandomValue;
   private Guest guest;
   private String bookName;
+  private int period;
 
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo,
       List<Guest> guests) {
@@ -71,11 +72,6 @@ public class GuestCommand implements Command {
   public void execute(String menuName) {
     System.out.printf("[%s]\n", menuName);
     double checkLoss;
-    System.out.println("-------------------------");
-    System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s]\n", guest.getReputation(),
-        guest.getTiredness(), guest.getLossCount(), percentFormat(guest.getLossForce()));
-
     //    for (RentInfo rentInfo : rentInfoList){
     //      if (rentInfo.getGuestType().equals(guest.getType()) &&
     //          rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
@@ -104,12 +100,9 @@ public class GuestCommand implements Command {
 
     guest.setRentPeriod(randomNum.randomDice());
 
-    System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
-        guest.getRentPeriod());
-    System.out.println("-------------------------");
-
     switch (menuName) {
       case "빌려준다":
+
         this.accept(guest);
         break;
       case "거절한다":
@@ -132,6 +125,7 @@ public class GuestCommand implements Command {
       System.out.println("-------------------------");
       System.out.printf("[%s] : [%s] 손님이 [%s] 책을 대여했습니다.\n", storeInfo.getDate(), guest.getType(),
           book.getBookName());
+      book.setStock(book.getStock() - 1);
       System.out.printf("[%s] 재고: [%d]권\n", book.getBookName(), book.getStock());
 
       RentInfo rentInfo = new RentInfo();
@@ -140,7 +134,6 @@ public class GuestCommand implements Command {
       rentInfo.setRentStartDate(storeInfo.getDate());
       rentInfo.setRentEndDate(rentPeriod);
       rentInfoList.add(rentInfo);
-      book.setStock(book.getStock() - 1);
 
       System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n",
           storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
