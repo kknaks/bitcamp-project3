@@ -4,7 +4,7 @@ package bitcamp.project3.vo;
 public class NoJob extends AbstractGuest {
 
     public NoJob() {
-        super("백수",1, 2, 2);
+        super("백수",10, 2, 2);
 
     }
 

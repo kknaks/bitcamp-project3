@@ -4,7 +4,7 @@ public class Student extends AbstractGuest {
 
 
     public Student() {
-        super("학생",3, 5, 3);
+        super("학생",20, 5, 3);
 
     }
 

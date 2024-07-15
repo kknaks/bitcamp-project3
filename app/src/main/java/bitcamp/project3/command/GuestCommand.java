@@ -43,13 +43,14 @@ public class GuestCommand implements Command {
 
     System.out.println("-------------------------");
     System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-    System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s]\n",
-        guest.getReputation(), guest.getTiredness(), guest.getLossCount(), percentFormat(guest.getLossForce()));
+    System.out.printf("명성도:[%s] \t피로도:[%s] \t분실수:[%s] \t분실력:[%s%%]\n",
+        guest.getReputation(), guest.getTiredness(), guest.getLossCount(), guest.getLossForce());
 
     for (RentInfo rentInfo : rentInfoList){
       if (rentInfo.getGuestType().equals(guest.getType()) &&
           rentInfo.getRentEndDate().isEqual(storeInfo.getDate()) &&
           !rentInfo.isBookReturn()){
+
           checkLoss = randomZero.randomDice(guest.getLossForce());
 
           BookInfo book = getBookName(rentInfo.getBookName());
