@@ -3,28 +3,31 @@
  */
 package bitcamp.project3;
 
+import bitcamp.project3.Guest.*;
 import bitcamp.project3.command.DayOverCommand;
 import bitcamp.project3.command.GuestCommand;
 import bitcamp.project3.command.OperationCommand;
 import bitcamp.project3.menu.MenuGroup;
 import bitcamp.project3.menu.MenuItem;
-import bitcamp.project3.vo.*;
+import bitcamp.project3.vo.BookInfo;
+import bitcamp.project3.vo.RentInfo;
+import bitcamp.project3.vo.StoreInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class App {
   static public List<BookInfo> bookList = new ArrayList<>();
-  static public List<Guest> guests = new ArrayList<>();
+  static public List<Guest> guestList = new ArrayList<>();
   static public StoreInfo storeInfos = new StoreInfo();
   List<RentInfo> rentInfos = new ArrayList<>();
-  GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guests);
+  GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guestList);
   OperationCommand operationCommand = new OperationCommand(bookList, rentInfos, storeInfos);
-  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos, rentInfos, bookList, guests);
+  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos, rentInfos, bookList, guestList);
   MenuGroup mainMenu = new MenuGroup("메인");
 
   private App() {
-    setData(bookList, guests);
+    setData(bookList, guestList);
     MenuGroup guestMenu = new MenuGroup("손님받기", guestCommand);
     guestMenu.add(new MenuItem("빌려준다", guestCommand));
     guestMenu.add(new MenuItem("거절한다", guestCommand));
@@ -37,8 +40,6 @@ public class App {
     mainMenu.add(operationMenu);
 
     mainMenu.add(new MenuItem("일과정산", dayOverCommand));
-
-    //MenuGroup adminMenu = new MenuGroup("관리자메뉴");
     mainMenu.setExitMenuTitle("종료");
   }
 
@@ -47,11 +48,11 @@ public class App {
   }
 
   private void setData(List<BookInfo> bookList, List<Guest> guests) {
-    bookList.add(new BookInfo("귀멸의칼날1", 4, 10));
-    bookList.add(new BookInfo("원피스", 4, 10));
-    bookList.add(new BookInfo("코난", 4, 10));
-    bookList.add(new BookInfo("귀멸의칼날4", 4, 10));
-    bookList.add(new BookInfo("귀멸의칼날5", 4, 10));
+    bookList.add(new BookInfo("귀멸의칼날", 0, 3000));
+    bookList.add(new BookInfo("원피스", 0, 4000));
+    bookList.add(new BookInfo("코난", 0, 5000));
+    bookList.add(new BookInfo("블리츠", 0, 6000));
+    bookList.add(new BookInfo("강철의연금술", 0, 7000));
     guests.add(new Kid());
     guests.add(new NoJob());
     guests.add(new Grandpa());

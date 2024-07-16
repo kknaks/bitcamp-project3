@@ -10,7 +10,7 @@ public class StoreInfo {
 
   public StoreInfo() {
     this.reputation = 50;
-    this.account = 50;
+    this.account = 100;
     this.tiredness = 50;
     this.date = LocalDate.of(2024, 1, 1);
 

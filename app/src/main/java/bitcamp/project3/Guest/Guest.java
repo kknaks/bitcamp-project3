@@ -1,6 +1,4 @@
-package bitcamp.project3.vo;
-
-import java.util.List;
+package bitcamp.project3.Guest;
 
 // Kid (어린아이)
 // Student (학생)
@@ -16,15 +14,16 @@ public interface Guest {
 
   int getReputation();
 
-    int getRentPeriod();
+  int getRentPeriod();
 
-    void setRentPeriod(int rentPeriod);
+  void setRentPeriod(int rentPeriod);
 
   int getLossCount();
 
   void setLossCount(int lossCount);
 
   int getTiredness();
+
   void setTiredness(int tiredness);
 
 

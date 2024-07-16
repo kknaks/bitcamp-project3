@@ -1,27 +1,23 @@
 package bitcamp.project3.command;
 
+import bitcamp.project3.Guest.Guest;
 import bitcamp.project3.util.CreateRandom.RandomAction;
 import bitcamp.project3.util.CreateRandom.RandomNum;
 import bitcamp.project3.util.CreateRandom.RandomZero;
 import bitcamp.project3.vo.BookInfo;
-import bitcamp.project3.vo.Guest;
 import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.StoreInfo;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GuestCommand implements Command {
 
 
   List<Guest> guests;
-  //String[] menus = {"빌려준다", "거절한다"};
   List<BookInfo> bookList;
   List<RentInfo> rentInfoList;
   StoreInfo storeInfo;
-  Map<Integer, MenuAction> menuMap = new HashMap<>();
   RandomAction randomNum = new RandomNum();
   RandomAction randomZero = new RandomZero();
 

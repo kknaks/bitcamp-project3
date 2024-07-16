@@ -132,12 +132,12 @@ public class OperationCommand implements Command {
 
   public void checkRent() {
     System.out.println("대출현황");
-    System.out.println("-----------------------------------------------------");
+    System.out.println("-------------------------------------------------------");
     System.out.printf("  고객구분  |");
     System.out.printf("   책제목   |");
     System.out.printf("   대여일   |");
     System.out.printf("   반납일   \n");
-    System.out.println("-----------------------------------------------------");
+    System.out.println("-------------------------------------------------------");
     for (RentInfo rentInfo : rentList) {
       System.out.printf("%-" + getAdjustedWidth(rentInfo.getGuestType(), 11) + "s|",
           rentInfo.getGuestType());
@@ -148,9 +148,9 @@ public class OperationCommand implements Command {
       String endDateStr = rentInfo.getRentEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
       System.out.printf(" %-" + getAdjustedWidth(endDateStr, 11) + "s|", endDateStr);
       System.out.printf("%b", rentInfo.isBookReturn());
-
       System.out.println();
     }
+    System.out.println("-------------------------------------------------------");
   }
 
 }

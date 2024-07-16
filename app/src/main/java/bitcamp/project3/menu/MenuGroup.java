@@ -1,10 +1,10 @@
 package bitcamp.project3.menu;
 
+import bitcamp.project3.Guest.Guest;
 import bitcamp.project3.command.Command;
 import bitcamp.project3.command.GuestCommand;
 import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
-import bitcamp.project3.vo.Guest;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
