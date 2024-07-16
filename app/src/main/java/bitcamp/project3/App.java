@@ -47,12 +47,28 @@ public class App {
     new App().execute();
   }
 
+  public static boolean checkFail() {
+    if (storeInfos.getAccount() < 0) {
+      System.out.println("자금난으로 은행에 압류 되었습니다.");
+      return false;
+    }
+    if (storeInfos.getReputation() < 0) {
+      System.out.println("만화책이 재미없다고 망했습니다.");
+      return false;
+    }
+    if (storeInfos.getTiredness() >= 100) {
+      System.out.println("과로로 쓰러져서 망했습니다.");
+      return false;
+    }
+    return true;
+  }
+
   private void setData(List<BookInfo> bookList, List<Guest> guests) {
-    bookList.add(new BookInfo("귀멸의칼날", 0, 3000));
-    bookList.add(new BookInfo("원피스", 0, 4000));
-    bookList.add(new BookInfo("코난", 0, 5000));
-    bookList.add(new BookInfo("블리츠", 0, 6000));
-    bookList.add(new BookInfo("강철의연금술", 0, 7000));
+    bookList.add(new BookInfo("귀멸의칼날", 2, 3000));
+    bookList.add(new BookInfo("원피스", 2, 4000));
+    bookList.add(new BookInfo("코난", 2, 5000));
+    bookList.add(new BookInfo("블리츠", 2, 6000));
+    bookList.add(new BookInfo("강철의연금술", 2, 7000));
     guests.add(new Kid());
     guests.add(new NoJob());
     guests.add(new Grandpa());

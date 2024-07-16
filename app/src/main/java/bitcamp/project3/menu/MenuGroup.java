@@ -1,9 +1,9 @@
 package bitcamp.project3.menu;
 
+import bitcamp.project3.App;
 import bitcamp.project3.Guest.Guest;
 import bitcamp.project3.command.Command;
 import bitcamp.project3.command.GuestCommand;
-import bitcamp.project3.util.Ansi;
 import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
 
@@ -48,6 +48,9 @@ public class MenuGroup extends AbstractMenu {
   public void execute() {
     menuPath.push(title);
     while (true) {
+      if (!App.checkFail()) {
+        return;
+      }
       printUI(title);
       printMenus();
       String command = Prompt.input("%s>", getMenuPathTitle());
@@ -156,4 +159,5 @@ public class MenuGroup extends AbstractMenu {
     percentFormat.setMinimumFractionDigits(0);
     return percentFormat.format(lossRate);
   }
+
 }

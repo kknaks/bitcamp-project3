@@ -47,15 +47,15 @@ public abstract class AbstractGuest implements Guest {
     this.rentPeriod = rentPeriod;
   }
 
-  @Override
-  public int getLossCount() {
-    return this.lossCount;
-  }
-
-  @Override
-  public void setLossCount(int lossCount) {
-    this.lossCount = lossCount;
-  }
+  //  @Override
+  //  public int getLossCount() {
+  //    return this.lossCount;
+  //  }
+  //
+  //  @Override
+  //  public void setLossCount(int lossCount) {
+  //    this.lossCount = lossCount;
+  //  }
 
   @Override
   public int getTiredness() {

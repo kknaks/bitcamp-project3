@@ -41,8 +41,8 @@ public class DayOverCommand implements Command {
         } else {
           returnFalse.add(rentInfo);
           book.setStock(book.getStock() - 1);
-//          Guest guest = getGueset(rentInfo.getGuestType());
-//          guest.setLossCount(guest.getLossCount() + 1);
+          //          Guest guest = getGueset(rentInfo.getGuestType());
+          //          guest.setLossCount(guest.getLossCount() + 1);
         }
       }
     }
@@ -60,6 +60,12 @@ public class DayOverCommand implements Command {
     }
 
     storeInfos.setDate(storeInfos.getDate().plusDays(1));
+    if (storeInfos.getTiredness() >= 30) {
+      storeInfos.setTiredness(storeInfos.getTiredness() - 30);
+    } else {
+      storeInfos.setTiredness(0);
+    }
+    storeInfos.setAccount(storeInfos.getAccount() - 500);
     System.out.println("-------------------------------");
   }
 
