@@ -42,8 +42,8 @@ public class DayOverCommand implements Command {
         } else {
           returnFalse.add(rentInfo);
           book.setStock(book.getStock() - 1);
-          Guest guest = getGueset(rentInfo.getGuestType());
-          guest.setLossCount(guest.getLossCount() + 1);
+//          Guest guest = getGueset(rentInfo.getGuestType());
+//          guest.setLossCount(guest.getLossCount() + 1);
         }
       }
     }
