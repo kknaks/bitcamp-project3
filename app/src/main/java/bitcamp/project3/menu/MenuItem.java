@@ -22,4 +22,11 @@ public class MenuItem extends AbstractMenu {
       System.out.println("execute");
     }
   }
+
+  //  public void printUI(String title){
+  //    if title.equals("빌려준다"){
+  //      Guest guest = ((GuestCommand) command).getGuest();
+  //      String bookName = ((GuestCommand) command).getBookName();
+  //    }
+  //  }
 }
