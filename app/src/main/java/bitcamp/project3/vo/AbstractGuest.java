@@ -4,7 +4,6 @@ public abstract class AbstractGuest implements Guest{
 
     protected String type;
     protected int lossForce;
-    protected int lossCount;
     protected int reputation;
     protected int rentPeriod;
     protected int tiredness;
@@ -12,7 +11,6 @@ public abstract class AbstractGuest implements Guest{
     protected AbstractGuest(String type, int lossForce, int reputation, int tiredness) {
         this.type = type;
         this.lossForce = lossForce;
-        this.lossCount = 0;
         this.reputation = reputation;
         this.tiredness = tiredness;
     }
@@ -45,16 +43,6 @@ public abstract class AbstractGuest implements Guest{
     @Override
     public int getRentPeriod() {
         return this.rentPeriod;
-    }
-
-    @Override
-    public int getLossCount() {
-        return this.lossCount;
-    }
-
-    @Override
-    public void setLossCount(int lossCount) {
-        this.lossCount = lossCount;
     }
 
     @Override

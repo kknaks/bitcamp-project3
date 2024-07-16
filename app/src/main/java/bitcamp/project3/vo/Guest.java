@@ -20,10 +20,6 @@ public interface Guest {
 
     void setRentPeriod(int rentPeriod);
 
-  int getLossCount();
-
-  void setLossCount(int lossCount);
-
   int getTiredness();
   void setTiredness(int tiredness);
 

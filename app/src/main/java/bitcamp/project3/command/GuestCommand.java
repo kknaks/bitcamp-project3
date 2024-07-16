@@ -17,18 +17,15 @@ public class GuestCommand implements Command {
 
 
   List<Guest> guests;
-  //String[] menus = {"빌려준다", "거절한다"};
   List<BookInfo> bookList;
   List<RentInfo> rentInfoList;
   StoreInfo storeInfo;
-  Map<Integer, MenuAction> menuMap = new HashMap<>();
   RandomAction randomNum = new RandomNum();
   RandomAction randomZero = new RandomZero();
 
   private int guestRandomValue;
   private Guest guest;
   private String bookName;
-  private int period;
 
   public GuestCommand(List<BookInfo> bookInfoList, List<RentInfo> rentInfoList, StoreInfo storeInfo,
       List<Guest> guests) {
@@ -46,9 +43,6 @@ public class GuestCommand implements Command {
     this.bookName = bookName;
   }
 
-  public int getGuestRandomValue() {
-    return guestRandomValue;
-  }
 
   public void setGuestRandomValue(int guestRandomValue) {
     this.guestRandomValue = guestRandomValue;
@@ -65,7 +59,7 @@ public class GuestCommand implements Command {
   public void preExecute() {
     //손님랜덤설정
     setGuestRandomValue(randomNum.randomDice(guests.size()));
-    setGuest(guest = guests.get(guestRandomValue));
+    setGuest(guests.get(guestRandomValue));
 
     //책 랜덤설정
     setBookName(bookList.get(randomNum.randomDice(bookList.size())).getBookName());
@@ -75,36 +69,7 @@ public class GuestCommand implements Command {
   }
 
   public void execute(String menuName) {
-    System.out.printf("[%s]\n", menuName);
-
-    //    double checkLoss;
-    //    for (RentInfo rentInfo : rentInfoList) {
-    //      if (rentInfo.getGuestType().equals(guest.getType()) && rentInfo.getRentEndDate()
-    //          .isEqual(storeInfo.getDate()) && !rentInfo.isBookReturn()) {
-    //
-    //        checkLoss = randomZero.randomDice(guest.getLossForce());
-    //
-    //        BookInfo book = getBookName(rentInfo.getBookName());
-    //        if (checkLoss == 0) {
-    //          if (book != null) {
-    //            System.out.printf("[%s] 손님이 [%s] 책을 분실했습니다.\n", guest.getType(), book.getBookName());
-    //            book.setStock(book.getStock() - 1);
-    //            storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
-    //            guest.setLossCount(guest.getLossCount() + 1);
-    //          } else {
-    //            System.out.println("[%s]는 없는 책입니다");
-    //          }
-    //        } else {
-    //          System.out.printf("[%s] 손님이 [%s] 책을 반납했습니다.\n", guest.getType(), book.getBookName());
-    //          book.setStock(book.getStock() + 1);
-    //          rentInfo.setBookReturn(true);
-    //
-    //          storeInfo.setTiredness(storeInfo.getTiredness() - guest.getTiredness());
-    //        }
-    //      } else {
-    //        System.out.println("---------------------------------------log");
-    //      }
-    //    }
+    System.out.printf("[%s]%n", menuName);
 
     switch (menuName) {
       case "빌려준다":
@@ -119,9 +84,9 @@ public class GuestCommand implements Command {
   private void accept(Guest guest) {
     BookInfo book = getBook();
 
-    if (book.getStock() == 0) {
+    if (book.getStock() <= 0) {
       System.out.println("-------------------------");
-      System.out.printf("[주인놈] >> 현재 [%s] 책 재고가 없습니다. 다음에 찾아주세요.\n", book.getBookName());
+      System.out.printf("[주인놈] >> 현재 [%s] 책 재고가 없습니다. 다음에 찾아주세요.%n", book.getBookName());
       System.out.println("-------------------------");
       storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
       storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
@@ -129,15 +94,10 @@ public class GuestCommand implements Command {
       LocalDate rentPeriod = storeInfo.getDate().plusDays(guest.getRentPeriod());
       boolean bookLoss = randomZero.randomDice(guest.getLossForce()) == 1;
 
-      System.out.printf("[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n\n",
-          storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
-
-      System.out.println("------- 대여 정보 -------");
-      System.out.printf("날짜: %s%n", storeInfo.getDate());
-      System.out.printf("대여자: %s%n", guest.getType());
-      System.out.printf("대여 도서: %s%n", book.getBookName());
-      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock() - 1);
-      book.setStock(book.getStock() - 1);
+      System.out.printf("[주인놈] >> 오늘이 [%s]이니까...%n",
+          storeInfo.getDate());
+      System.out.printf("[주인놈] >> [%s]일..후면..[%s]일 까지 반납하세요!%n%n",
+          guest.getRentPeriod(), rentPeriod);
 
       RentInfo rentInfo = new RentInfo();
       rentInfo.setGuestType(guest.getType());
@@ -147,17 +107,25 @@ public class GuestCommand implements Command {
       rentInfo.setBookReturn(bookLoss);
       rentInfoList.add(rentInfo);
 
-      System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n",
-          storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
+      System.out.println("------- 대여 정보 -------");
+      System.out.printf("대여자: %s%n", guest.getType());
+      System.out.printf("대여 도서: %s%n", book.getBookName());
+      System.out.printf("대여 일자: %s%n", storeInfo.getDate());
+      System.out.printf("반납 일자: %s%n", rentPeriod);
+      book.setStock(book.getStock() - 1);
+      System.out.println("-------------------------");
+      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock());
 
-      storeInfo.setAccount(storeInfo.getAccount() + (guest.getRentPeriod() * 2));
+
+
+      storeInfo.setAccount(storeInfo.getAccount() + (guest.getRentPeriod() * 300));
       storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
       storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
     }
   }
 
   private void reject(Guest guest) {
-    System.out.println("[주인놈] >> 죄송합니다. 찾으시는 책은 없습니다.\n");
+    System.out.println("[주인놈] >> 죄송합니다. 찾으시는 책은 없습니다.%n");
 
     storeInfo.setReputation(storeInfo.getReputation() - guest.getReputation());
     storeInfo.setTiredness(storeInfo.getTiredness() + guest.getTiredness());
@@ -166,15 +134,6 @@ public class GuestCommand implements Command {
   private BookInfo getBook() {
     for (BookInfo bookInfo : bookList) {
       if (bookInfo.getBookName().equals(bookName)) {
-        return bookInfo;
-      }
-    }
-    return null;
-  }
-
-  private BookInfo getBookName(String name) {
-    for (BookInfo bookInfo : bookList) {
-      if (bookInfo.getBookName().equals(name)) {
         return bookInfo;
       }
     }
