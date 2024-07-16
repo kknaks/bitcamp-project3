@@ -20,7 +20,7 @@ public class App {
   List<RentInfo> rentInfos = new ArrayList<>();
   GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guests);
   OperationCommand operationCommand = new OperationCommand(bookList, rentInfos, storeInfos);
-  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos, rentInfos, bookList);
+  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos, rentInfos, bookList, guests);
   MenuGroup mainMenu = new MenuGroup("메인");
 
   private App() {
