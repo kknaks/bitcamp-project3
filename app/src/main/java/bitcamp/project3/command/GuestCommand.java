@@ -105,7 +105,6 @@ public class GuestCommand implements Command {
 
     switch (menuName) {
       case "빌려준다":
-
         this.accept(guest);
         break;
       case "거절한다":
@@ -128,12 +127,6 @@ public class GuestCommand implements Command {
       System.out.printf("[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n\n"
           ,storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
 
-      System.out.println("------- 대여 정보 -------");
-      System.out.printf("날짜: %s%n", storeInfo.getDate());
-      System.out.printf("대여자: %s%n", guest.getType());
-      System.out.printf("대여 도서: %s%n", book.getBookName());
-      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock() - 1);
-
       RentInfo rentInfo = new RentInfo();
       rentInfo.setGuestType(guest.getType());
       rentInfo.setBookName(book.getBookName());
@@ -141,8 +134,11 @@ public class GuestCommand implements Command {
       rentInfo.setRentEndDate(rentPeriod);
       rentInfoList.add(rentInfo);
 
-      System.out.printf("\n[주인놈] >> 오늘이 [%s]이니까...[%s]일..후면..[%s]일 까지 반납하세요!\n",
-          storeInfo.getDate(), guest.getRentPeriod(), rentPeriod);
+      System.out.println("------- 대여 정보 -------");
+      System.out.printf("대여자: %s%n", guest.getType());
+      System.out.printf("대여 도서: %s%n", rentInfo.getBookName());
+      System.out.printf("대여 일자: %s~ %s%n", storeInfo.getDate(), rentInfo.getRentEndDate());
+      System.out.printf("도서 재고: %d권 남았습니다.%n%n", book.getStock() - 1);
 
       storeInfo.setAccount(storeInfo.getAccount() + (guest.getRentPeriod() * 2));
       storeInfo.setReputation(storeInfo.getReputation() + guest.getReputation());
@@ -159,7 +155,7 @@ public class GuestCommand implements Command {
 
   private BookInfo getBook() {
     for (BookInfo bookInfo : bookList) {
-      if (bookInfo.getBookName().equals(bookName)) {
+      if (bookInfo.getBookName().equals(getBookName())) {
         return bookInfo;
       }
     }

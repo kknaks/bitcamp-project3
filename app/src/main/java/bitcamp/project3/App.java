@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class App {
-  static public List<BookInfo> bookList = new ArrayList<>();
-  static public List<Guest> guests = new ArrayList<>();
-  static public StoreInfo storeInfos = new StoreInfo();
+  public static  List<BookInfo> bookList = new ArrayList<>();
+  public static  List<Guest> guests = new ArrayList<>();
+  public static  StoreInfo storeInfos = new StoreInfo();
   List<RentInfo> rentInfos = new ArrayList<>();
   GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guests);
   OperationCommand operationCommand = new OperationCommand(bookList, rentInfos, storeInfos);

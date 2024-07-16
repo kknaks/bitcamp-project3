@@ -4,6 +4,7 @@ import bitcamp.project3.command.Command;
 import bitcamp.project3.command.GuestCommand;
 import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
+import bitcamp.project3.vo.BookInfo;
 import bitcamp.project3.vo.Guest;
 
 import java.text.NumberFormat;
@@ -96,7 +97,6 @@ public class MenuGroup extends AbstractMenu {
       case "손님받기":
         ((GuestCommand) command).preExecute();
         Guest guest = ((GuestCommand) command).getGuest();
-        String bookName = ((GuestCommand) command).getBookName();
 
       System.out.println("-------------------------");
       System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
@@ -106,8 +106,8 @@ public class MenuGroup extends AbstractMenu {
       printStatus("분실수", guest.getLossCount());
 
         guest.setRentPeriod(randomNum.randomDice());
-        bookName = bookList.get(randomNum.randomDice(bookList.size())).getBookName();
-        System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
+        BookInfo book = bookList.get(randomNum.randomDice(bookList.size()));
+        System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), book.getBookName(),
             guest.getRentPeriod());
         System.out.println("-------------------------");
         break;
