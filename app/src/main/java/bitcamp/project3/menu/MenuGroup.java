@@ -4,14 +4,12 @@ import bitcamp.project3.command.Command;
 import bitcamp.project3.command.GuestCommand;
 import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
-import bitcamp.project3.vo.BookInfo;
 import bitcamp.project3.vo.Guest;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import static bitcamp.project3.App.bookList;
 import static bitcamp.project3.App.storeInfos;
 
 public class MenuGroup extends AbstractMenu {
@@ -31,6 +29,18 @@ public class MenuGroup extends AbstractMenu {
     super(title);
     this.command = command;
     menuPath = new Stack<>();
+  }
+
+  public static void printStatus(String name, int value, int maxValue) {
+    int barLength = 10;
+    int filledLength = (int) ((double) value / maxValue * barLength);
+    String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
+
+    System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
+  }
+
+  public static void printStatus(String name, int value) {
+    System.out.printf("%s: %d                %n", name, value);
   }
 
   @Override
@@ -97,17 +107,15 @@ public class MenuGroup extends AbstractMenu {
       case "손님받기":
         ((GuestCommand) command).preExecute();
         Guest guest = ((GuestCommand) command).getGuest();
+        String bookName = ((GuestCommand) command).getBookName();
 
-      System.out.println("-------------------------");
-      System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
-      printStatus("명성도", guest.getReputation(), 10);
-      printStatus("피로도", guest.getTiredness(), 10);
-      printStatus("분실력", guest.getLossForce(), 100);
-      printStatus("분실수", guest.getLossCount());
-
-        guest.setRentPeriod(randomNum.randomDice());
-        BookInfo book = bookList.get(randomNum.randomDice(bookList.size()));
-        System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), book.getBookName(),
+        System.out.println("-------------------------");
+        System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
+        printStatus("명성도", guest.getReputation(), 10);
+        printStatus("피로도", guest.getTiredness(), 10);
+        printStatus("분실력", guest.getLossForce(), 100);
+        printStatus("분실수", guest.getLossCount());
+        System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
             guest.getRentPeriod());
         System.out.println("-------------------------");
         break;
@@ -147,17 +155,5 @@ public class MenuGroup extends AbstractMenu {
     NumberFormat percentFormat = NumberFormat.getPercentInstance();
     percentFormat.setMinimumFractionDigits(0);
     return percentFormat.format(lossRate);
-  }
-
-  public static void printStatus(String name, int value, int maxValue) {
-    int barLength = 10;
-    int filledLength = (int) ((double) value / maxValue * barLength);
-    String bar = "█".repeat(filledLength) + "░".repeat(barLength - filledLength);
-
-    System.out.printf("%s: [%s] %d/%d   %n", name, bar, value, maxValue);
-  }
-
-  public static void printStatus(String name, int value) {
-    System.out.printf("%s: %d                %n", name, value);
   }
 }

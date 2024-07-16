@@ -147,6 +147,7 @@ public class OperationCommand implements Command {
       System.out.printf(" %-" + getAdjustedWidth(startDateStr, 11) + "s|", startDateStr);
       String endDateStr = rentInfo.getRentEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
       System.out.printf(" %-" + getAdjustedWidth(endDateStr, 11) + "s|", endDateStr);
+      System.out.printf("%b", rentInfo.isBookReturn());
 
       System.out.println();
     }

@@ -20,7 +20,7 @@ public class App {
   List<RentInfo> rentInfos = new ArrayList<>();
   GuestCommand guestCommand = new GuestCommand(bookList, rentInfos, storeInfos, guests);
   OperationCommand operationCommand = new OperationCommand(bookList, rentInfos, storeInfos);
-  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos);
+  DayOverCommand dayOverCommand = new DayOverCommand(storeInfos, rentInfos, bookList);
   MenuGroup mainMenu = new MenuGroup("메인");
 
   private App() {
@@ -47,11 +47,11 @@ public class App {
   }
 
   private void setData(List<BookInfo> bookList, List<Guest> guests) {
-    bookList.add(new BookInfo("귀멸의칼날1", 2, 10));
-    bookList.add(new BookInfo("원피스", 3, 10));
-    bookList.add(new BookInfo("코난", 1, 10));
-    bookList.add(new BookInfo("귀멸의칼날4", 5, 10));
-    bookList.add(new BookInfo("귀멸의칼날5", 6, 10));
+    bookList.add(new BookInfo("귀멸의칼날1", 4, 10));
+    bookList.add(new BookInfo("원피스", 4, 10));
+    bookList.add(new BookInfo("코난", 4, 10));
+    bookList.add(new BookInfo("귀멸의칼날4", 4, 10));
+    bookList.add(new BookInfo("귀멸의칼날5", 4, 10));
     guests.add(new Kid());
     guests.add(new NoJob());
     guests.add(new Grandpa());
