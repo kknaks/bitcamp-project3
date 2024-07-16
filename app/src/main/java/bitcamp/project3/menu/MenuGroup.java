@@ -3,6 +3,7 @@ package bitcamp.project3.menu;
 import bitcamp.project3.Guest.Guest;
 import bitcamp.project3.command.Command;
 import bitcamp.project3.command.GuestCommand;
+import bitcamp.project3.util.Ansi;
 import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
 
@@ -110,12 +111,11 @@ public class MenuGroup extends AbstractMenu {
         String bookName = ((GuestCommand) command).getBookName();
 
         System.out.println("-------------------------");
-        System.out.printf("[%s] 손님이 입장하셨습니다.\n", guest.getType());
+        System.out.printf("[%s] 손님이 입장하셨습니다.%n", guest.getType());
         printStatus("명성도", guest.getReputation(), 10);
         printStatus("피로도", guest.getTiredness(), 10);
         printStatus("분실력", guest.getLossForce(), 100);
-        printStatus("분실수", guest.getLossCount());
-        System.out.printf("\n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?\n", guest.getType(), bookName,
+        System.out.printf("%n[%s] >> [%s] [%d]일 동안 빌릴 수 있을까요?%n", guest.getType(), bookName,
             guest.getRentPeriod());
         System.out.println("-------------------------");
         break;
