@@ -2,14 +2,13 @@ package bitcamp.project3.command;
 
 import bitcamp.project3.Guest.Guest;
 import bitcamp.project3.util.CreateRandom.RandomAction;
-import bitcamp.project3.util.CreateRandom.RandomNum;
-import bitcamp.project3.util.CreateRandom.RandomZero;
 import bitcamp.project3.vo.BookInfo;
 import bitcamp.project3.vo.RentInfo;
 import bitcamp.project3.vo.StoreInfo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 public class GuestCommand implements Command {
 
@@ -18,8 +17,7 @@ public class GuestCommand implements Command {
   List<BookInfo> bookList;
   List<RentInfo> rentInfoList;
   StoreInfo storeInfo;
-  RandomAction randomNum = new RandomNum();
-  RandomAction randomZero = new RandomZero();
+  Random random = new Random();
 
   private int guestRandomValue;
   private Guest guest;
@@ -56,14 +54,15 @@ public class GuestCommand implements Command {
 
   public void preExecute() {
     //손님랜덤설정
-    setGuestRandomValue(randomNum.randomDice(guests.size()));
+    RandomAction r1 = random::nextInt;
+    setGuestRandomValue(r1.randomDice(guests.size()));
     setGuest(guests.get(guestRandomValue));
 
     //책 랜덤설정
-    setBookName(bookList.get(randomNum.randomDice(bookList.size())).getBookName());
+    setBookName(bookList.get(r1.randomDice(bookList.size())).getBookName());
 
     //대여기간 랜덤설정
-    guest.setRentPeriod(randomNum.randomDice());
+    guest.setRentPeriod(r1.randomDice(7) + 1);
   }
 
   public void execute(String menuName) {
@@ -81,6 +80,10 @@ public class GuestCommand implements Command {
 
   private void accept(Guest guest) {
     BookInfo book = getBook();
+    RandomAction r2 = n -> {
+      double probability = ((double) n) / 100;
+      return random.nextDouble() < probability ? 0 : 1;
+    };
 
     if (book.getStock() <= 0) {
       System.out.println("-------------------------");
@@ -90,12 +93,11 @@ public class GuestCommand implements Command {
       storeInfo.setTiredness(storeInfo.getTiredness() + guest.getRentPeriod());
     } else {
       LocalDate rentPeriod = storeInfo.getDate().plusDays(guest.getRentPeriod());
-      boolean bookLoss = randomZero.randomDice(guest.getLossForce()) == 1;
+      boolean bookLoss = r2.randomDice(guest.getLossForce()) == 1;
 
-      System.out.printf("[주인놈] >> 오늘이 [%s]이니까...%n",
-          storeInfo.getDate());
-      System.out.printf("[주인놈] >> [%s]일..후면..[%s]일 까지 반납하세요!%n%n",
-          guest.getRentPeriod(), rentPeriod);
+      System.out.printf("[주인놈] >> 오늘이 [%s]이니까...%n", storeInfo.getDate());
+      System.out.printf("[주인놈] >> [%s]일..후면..[%s]일 까지 반납하세요!%n%n", guest.getRentPeriod(),
+          rentPeriod);
 
       RentInfo rentInfo = new RentInfo();
       rentInfo.setGuestType(guest.getType());

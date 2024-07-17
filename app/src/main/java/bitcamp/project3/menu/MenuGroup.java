@@ -4,7 +4,6 @@ import bitcamp.project3.App;
 import bitcamp.project3.Guest.Guest;
 import bitcamp.project3.command.Command;
 import bitcamp.project3.command.GuestCommand;
-import bitcamp.project3.util.CreateRandom;
 import bitcamp.project3.util.Prompt;
 
 import java.text.NumberFormat;
@@ -15,7 +14,6 @@ import static bitcamp.project3.App.storeInfos;
 
 public class MenuGroup extends AbstractMenu {
   Command command;
-  CreateRandom.RandomAction randomNum = new CreateRandom.RandomNum();
   private MenuGroup parent;
   private Stack<String> menuPath;
   private ArrayList<Menu> children = new ArrayList<>();

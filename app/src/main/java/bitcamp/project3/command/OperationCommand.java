@@ -10,8 +10,7 @@ import java.util.List;
 
 public class OperationCommand implements Command {
 
-  //String[] menus = {"재고조회", "서점가기", "대출현황"};
-  //Map<Integer, MenuAction> menuMap = new HashMap<>();
+
   private List<BookInfo> bookList;
   private List<RentInfo> rentList;
   private StoreInfo storeInfo;
@@ -22,20 +21,6 @@ public class OperationCommand implements Command {
     this.storeInfo = storeInfo;
   }
 
-  //  public static void main(String[] args) {
-  //    //    String s1 = "가가가";
-  //    //    String s2 = "가가가가";
-  //    //    String s3 = "가가가가가";
-  //
-  //    int width = 15; // 원하는 폭
-  //    String s4 = "";
-  //    for (int i = 0; i < 10; i++){
-  //      s4 += "가";
-  //      System.out.printf("%-" + (getAdjustedWidth(s4, width))+ "s|\n", s4);
-  //      System.out.printf("%d \n",getAdjustedWidth(s4, width));
-  //      System.out.printf("----------\n");
-  //    }
-  //  }
   private static int getAdjustedWidth(String s, int width) {
     int length = s.length();
     int nonAsciiCount = 0;
@@ -133,13 +118,13 @@ public class OperationCommand implements Command {
   public void checkRent() {
     System.out.println("대출현황");
     System.out.println("-------------------------------------------------------");
-    System.out.printf("  고객구분  |");
+    System.out.printf("   고객구분   |");
     System.out.printf("   책제목   |");
     System.out.printf("   대여일   |");
     System.out.printf("   반납일   \n");
     System.out.println("-------------------------------------------------------");
     for (RentInfo rentInfo : rentList) {
-      System.out.printf("%-" + getAdjustedWidth(rentInfo.getGuestType(), 11) + "s|",
+      System.out.printf("%-" + getAdjustedWidth(rentInfo.getGuestType(), 13) + "s|",
           rentInfo.getGuestType());
       System.out.printf("%-" + getAdjustedWidth(rentInfo.getBookName(), 11) + "s|",
           rentInfo.getBookName());
